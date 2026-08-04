@@ -378,7 +378,8 @@
         "image": "/img/products/B0H4S87HBR.jpg",
         "url": "https://www.amazon.com/dp/B0H4S87HBR?tag=peptides03-20&ascsubtag=pn-tier-finds"
       }
-    ]
+    ],
+    "hidden": true
   },
   "sprays": {
     "label": "Sprays",
