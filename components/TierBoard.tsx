@@ -196,7 +196,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
        opened. Touch now press-and-holds to arm a drag, which leaves plain
        swipes free to scroll the page and taps free to follow the link.
        Mouse keeps the immediate 5px threshold. */
-    const HOLD_MS = 220;
+    const HOLD_MS = 180;   // grip is the primary path; this is the fallback
     const SCROLL_TOL = 14;   // finger wander that still counts as a scroll
     let holdTimer: number | undefined;
 
@@ -225,11 +225,18 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       if (!tile || e.button > 0) return;
       suppressClick.current = false;
       const touch = e.pointerType !== "mouse";
+      // The grip is a dedicated drag handle: no hold, no ambiguity with the link.
+      const fromGrip = !!(e.target as HTMLElement).closest("[data-grip]");
       drag.current = {
         id: tile.dataset.tile!, el: tile, x: e.clientX, y: e.clientY,
-        active: false, pid: e.pointerId, touch, armed: !touch,
+        active: false, pid: e.pointerId, touch, armed: !touch || fromGrip,
       };
-      if (touch) holdTimer = window.setTimeout(arm, HOLD_MS);
+      if (fromGrip) {
+        e.preventDefault();          // the grip owns this gesture outright
+        drag.current.el.classList.add(styles.armed);
+      } else if (touch) {
+        holdTimer = window.setTimeout(arm, HOLD_MS);
+      }
     };
 
     const onMove = (e: PointerEvent) => {
@@ -325,12 +332,19 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       setCapErr(""); setEmail(""); setCaptureFor(tile.href);
     };
 
+    /* Android raises contextmenu on long-press; iOS is handled by
+       -webkit-touch-callout:none in CSS. Both would hijack the drag. */
+    const onContext = (e: Event) => {
+      if ((e.target as HTMLElement).closest("[data-tile]")) e.preventDefault();
+    };
+    document.addEventListener("contextmenu", onContext);
     document.addEventListener("touchmove", blockScroll, { passive: false });
     document.addEventListener("pointerdown", onDown);
     document.addEventListener("pointermove", onMove);
     document.addEventListener("pointerup", onUp);
     document.addEventListener("click", onClick, true);
     return () => {
+      document.removeEventListener("contextmenu", onContext);
       document.removeEventListener("touchmove", blockScroll);
       document.removeEventListener("pointerdown", onDown);
       document.removeEventListener("pointermove", onMove);
@@ -484,6 +498,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
         )}
         <span className={imgMode && pic ? styles.nameOver : styles.name}>{t.name}</span>
         <span className={styles.go}>↗</span>
+        <span className={styles.grip} data-grip aria-hidden="true">⠿</span>
       </a>
     );
   };

@@ -1,6 +1,19 @@
 /* ---------- tabs + share ---------- */
 .boardTop { display: flex; align-items: flex-start; gap: 18px; margin: 26px 0 18px; }
-.cats { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
+/* Nine-plus tabs wrap into a wall and push the board down. Single scrolling
+   strip at every width, with a fade on the right so it reads as scrollable. */
+.cats {
+  display: flex; gap: 6px; flex: 1 1 auto; min-width: 0; max-width: 100%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent 100%);
+}
+.cats::-webkit-scrollbar { display: none; }
+.cat { flex: 0 0 auto; }
 .cat {
   background: var(--panel); border: 1px solid var(--line); color: var(--muted);
   padding: 7px 13px; border-radius: 999px; cursor: pointer; font-size: 13px;
@@ -113,7 +126,7 @@
 .tile {
   width: var(--tile); height: var(--tile); border-radius: 7px; overflow: hidden;
   position: relative; cursor: grab; user-select: none; -webkit-user-select: none;
-  -webkit-user-drag: none; touch-action: pan-y; text-decoration: none; color: var(--text);
+  -webkit-user-drag: none; -webkit-touch-callout: none; touch-action: pan-y; text-decoration: none; color: var(--text);
   background: var(--panel-2); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center; text-align: center;
   transition: transform .08s, box-shadow .08s; flex: 0 0 auto;
@@ -197,6 +210,9 @@
 
 @media (max-width: 860px) {
   .boardTop { flex-direction: column; }
+  /* In the column layout the strip has no flex basis to shrink against, so it
+     grows to fit its tabs and drags the whole page wider. Pin it instead. */
+  .cats { width: 100%; }
   .share { margin-left: 0; width: 100%; }
   .shareUrl { width: 100%; max-width: none; }
   .shareCopy { flex: 1; }
@@ -272,19 +288,6 @@
 }
 .cat.research:hover { border-color: #6a7180; }
 
-/* Nine tabs wrap into a wall on a phone; scroll them instead, like the
-   storefront does. */
-@media (max-width: 860px) {
-  .cats {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 2px;
-  }
-  .cats::-webkit-scrollbar { display: none; }
-  .cat { flex: 0 0 auto; }
-}
 
 /* Armed = the press-and-hold registered and a drag is about to begin. The
    visual + haptic tell the user the gesture took, so they don't keep stabbing
@@ -297,4 +300,26 @@
 /* Bigger touch targets: tiles are also the tap-to-shop control. */
 @media (max-width: 640px) {
   .tile { border-radius: 9px; }
+}
+
+/* Explicit drag grip. Holding an <a> opens the OS link preview on iOS and the
+   context menu on Android, so hold-to-drag was fighting the platform. The grip
+   drags instantly with no hold at all, and leaves the rest of the tile as a
+   plain tap target for the affiliate link. */
+.grip {
+  position: absolute; top: 0; left: 0;
+  width: 30px; height: 30px;           /* generous touch target on a 84px tile */
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; line-height: 1;
+  color: rgba(255,255,255,.55);
+  text-shadow: 0 1px 3px rgba(0,0,0,.9);
+  background: linear-gradient(135deg, rgba(0,0,0,.55), transparent 70%);
+  border-top-left-radius: 7px;
+  cursor: grab;
+  touch-action: none;                  /* the grip itself never scrolls */
+}
+.grip:active { cursor: grabbing; }
+.tile:hover .grip { color: var(--accent); }
+@media (max-width: 640px) {
+  .grip { width: 34px; height: 34px; font-size: 14px; color: rgba(255,255,255,.7); }
 }
