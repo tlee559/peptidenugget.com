@@ -15,14 +15,15 @@ export type Category = {
   label: string;
   title: string;
   preset: PresetKey;
-  storefront?: "amazon" | "search";
+  storefront?: "amazon" | "aminoclub" | "search";
+  affiliateUrl?: string;
   vials?: boolean;
   hidden?: boolean;
   discover?: { search: string; match?: string[]; limit?: number };
   items: Item[];
 };
 
-export type PresetKey = "grade" | "vendor" | "effect";
+export type PresetKey = "grade" | "vendor";
 
 export const CATALOG = raw as unknown as Record<string, Category>;
 
@@ -30,9 +31,8 @@ export const CATALOG = raw as unknown as Record<string, Category>;
 export const PRESETS: Record<PresetKey, [string, string][]> = {
   grade: [["S", "#ff7f7f"], ["A", "#ffbf7f"], ["B", "#ffdf7f"], ["C", "#ffff7f"], ["D", "#bfff7f"], ["F", "#7fffff"]],
   vendor: [["Would Reorder", "#ff7f7f"], ["Solid", "#ffbf7f"], ["Fine", "#ffdf7f"], ["Mid", "#ffff7f"], ["Sketchy", "#bfff7f"], ["Avoid", "#7fffff"]],
-  effect: [["Life Changing", "#ff7f7f"], ["Clearly Works", "#ffbf7f"], ["Subtle", "#ffdf7f"], ["Placebo?", "#ffff7f"], ["Nothing", "#bfff7f"], ["Made It Worse", "#7fffff"]],
 };
-export const PRESET_ORDER: PresetKey[] = ["grade", "vendor", "effect"];
+export const PRESET_ORDER: PresetKey[] = ["grade", "vendor"];
 
 /** URL slug <-> catalog key. Slugs are the public contract; keys are internal. */
 export const SLUGS: Record<string, string> = {
@@ -76,6 +76,12 @@ export function linkFor(item: Item, categoryKey: string): string {
   if (item.url) return item.url;
   const cat = CATALOG[categoryKey];
   const sub = `pn-tier-${categoryKey}`;
+
+  // Referral partner: one program link for the whole category. We deliberately
+  // do NOT append per-item params — altering a partner's referral URL risks
+  // breaking their code attribution.
+  if (cat?.storefront === "aminoclub" && cat.affiliateUrl) return cat.affiliateUrl;
+
   if (cat?.storefront !== "amazon") {
     return "https://www.google.com/search?q=" + encodeURIComponent(item.name);
   }
@@ -83,3 +89,9 @@ export function linkFor(item: Item, categoryKey: string): string {
     ? `https://www.amazon.com/dp/${item.asin}?tag=${AMAZON_TAG}&ascsubtag=${sub}`
     : `https://www.amazon.com/s?k=${encodeURIComponent(item.name)}&tag=${AMAZON_TAG}&ascsubtag=${sub}`;
 }
+
+/** Any storefront we earn from — drives both the FTC disclosure and the
+ *  email-capture interstitial. */
+export const isAffiliate = (categoryKey: string) =>
+  CATALOG[categoryKey]?.storefront === "amazon" ||
+  CATALOG[categoryKey]?.storefront === "aminoclub";

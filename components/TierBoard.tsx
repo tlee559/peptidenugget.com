@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   CATALOG, PRESETS, PRESET_ORDER, KEY_TO_SLUG, visibleCategories,
-  vialArt, hueFor, accentFor, linkFor, type Item, type PresetKey,
+  vialArt, hueFor, accentFor, linkFor, isAffiliate, type Item, type PresetKey,
 } from "@/lib/catalog";
 import styles from "./TierBoard.module.css";
 
@@ -263,7 +263,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       if (!tile) return;
       if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; return; }
       suppressClick.current = false;
-      if (CATALOG[stateRef.current.key].storefront !== "amazon") return;
+      if (!isAffiliate(stateRef.current.key)) return;
 
       let ask = true;
       try {
@@ -491,6 +491,12 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
             <b>Tap</b> any item to <span className={styles.price}>check current pricing</span>.
           </span>
         </div>
+        {isAffiliate(key) && (
+          <p className={styles.adNotice}>
+            <b>#ad</b> — product links on this list are affiliate links. We earn a
+            commission if you buy through them, at no extra cost to you.
+          </p>
+        )}
       </div>
 
       <div className={styles.board} ref={boardRef}>

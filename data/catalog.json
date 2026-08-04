@@ -3,7 +3,7 @@
     "label": "Peptides",
     "title": "Peptide Tier List",
     "preset": "grade",
-    "storefront": "search",
+    "storefront": "aminoclub",
     "vials": true,
     "items": [
       {
@@ -110,7 +110,8 @@
         "name": "Glutathione",
         "tier": -1
       }
-    ]
+    ],
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
   },
   "vendors": {
     "hidden": true,
