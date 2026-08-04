@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { visibleCategories, KEY_TO_SLUG } from "@/lib/catalog";
+import MetaPixel from "@/components/MetaPixel";
 
 export const metadata: Metadata = {
   // www is the served host — the apex 308s to it. A canonical pointing at a
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
+        <MetaPixel />
         <header className="site-head">
           <div className="wrap">
             <Link className="brand" href="/">

@@ -7,6 +7,7 @@ import {
   vialArt, hueFor, accentFor, linkFor, type Item, type PresetKey,
 } from "@/lib/catalog";
 import styles from "./TierBoard.module.css";
+import { trackAffiliateClick } from "@/lib/fbq";
 
 type Tile = Item & { id: string; url: string };
 type Row = { id: string; label: string; color: string; items: Tile[] };
@@ -551,6 +552,15 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
         rel="sponsored nofollow noopener noreferrer"
         draggable={false}
         title={t.name + " — check current pricing"}
+        onClick={() =>
+          trackAffiliateClick({
+            product: t.name,
+            category: cat.label,
+            storefront: cat.storefront,
+            url: t.url,
+            value: t.price,
+          })
+        }
       >
         {imgMode && pic ? (
           // eslint-disable-next-line @next/next/no-img-element
