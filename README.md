@@ -1,35 +1,33 @@
-# peptidenugget
+# peptidenugget.com
 
-Community tier lists for peptides, injection supplies, and cold storage gear.
-
-## The whole system
-
-One data file, two commands.
-
-```
-data/catalog.json     <- the only file you edit to change content
-src/board.html        <- the page template
-build.js              <- inlines everything -> prototype/tier-board.html
-scripts/scrape-amazon.js  <- refreshes Amazon links + images into the catalog
-```
+Community tier lists for peptides, injection supplies, and Amazon finds.
+Next.js (App Router) + Supabase + Mailgun, deployed on Vercel.
 
 ```bash
-npm run build     # rebuild the page
-npm run open      # rebuild and open it
-npm run scrape    # refresh Amazon links/images (needs APIFY_TOKEN)
+npm run dev      # local
+npm run build    # production build
+npm run scrape   # refresh Amazon links + images (needs APIFY_TOKEN)
 ```
 
-The built page is a **single self-contained HTML file**. Logo, favicon, vial
-art, and every product photo are inlined as data URIs — no CDN, no image
-proxy, no CORS setup. Open it with `file://` and it works.
+## Layout
 
-That isn't only convenience: the board draws every tile onto a canvas to
-produce the shareable PNG, and a cross-origin image would taint that canvas
-and break export entirely. Inlining sidesteps it.
+```
+app/                    routes
+  page.tsx              home (peptide board)
+  tier/[slug]/          per-list SEO pages: peptides, supplies, amazon-finds
+  guides/using-peptides/  the reconstitution guide
+  api/subscribe/        email capture endpoint
+components/TierBoard.tsx  the board (client component)
+lib/catalog.ts          typed access to the catalog + link building
+data/catalog.json       ← the only file you edit to change content
+data/site.json          site settings (vial art style)
+public/img/             logo, vial art, product photos
+scripts/scrape-amazon.js
+```
 
 ## Adding or changing an item
 
-Edit `data/catalog.json`. Each item:
+Edit `data/catalog.json`:
 
 ```json
 {
@@ -40,86 +38,98 @@ Edit `data/catalog.json`. Each item:
 }
 ```
 
-- `tier` — row index (0 = top). Use `-1` to leave it unranked.
-- `search` / `match` — Amazon-only. `search` is the query; `match` lists
-  tokens every candidate title must contain.
+- `tier` — row index (0 = top). `-1` leaves it unranked.
+- `search` / `match` — Amazon-only. `search` is the query; `match` lists tokens
+  every candidate title must contain.
 
-Then `npm run scrape` fills in `asin`, `image`, and `url`, and `npm run build`
-bakes it into the page.
+Then `npm run scrape` fills in `asin`, `image`, `url`.
 
 ### Why `match` exists
 
 The top Amazon search result is wrong surprisingly often — "YETI Roadie 24
-cooler" returned a Carhartt cooler. The scraper pulls 5 candidates and keeps
-the first whose title contains every `match` token. **If nothing matches, the
-item is reported and left unchanged.** A wrong ASIN is worse than none: it
-becomes both the wrong photo and a link to the wrong product. Widen `search`
-or loosen `match` and re-run.
+cooler" once returned a Carhartt cooler. The scraper pulls 5 candidates and
+keeps the first whose title contains every `match` token. **If nothing matches,
+the item is reported and left unchanged.** A wrong ASIN is worse than none: it
+becomes both the wrong photo and a link to the wrong product.
+
+Scraping only fills gaps by default since Apify bills per item. Use
+`npm run scrape -- --all` to force a refresh.
+
+### Discovery mode
+
+A category can build its own item list from a search instead of a hand-written
+list — that's how Amazon Finds works:
+
+```json
+"discover": { "search": "GHK-Cu copper peptide serum", "match": ["copper"], "limit": 20 }
+```
 
 ## Categories
 
-| Key | Tab | Links | Tiles |
+| Key | Slug | Links | Tiles |
 |---|---|---|---|
-| `compounds` | Peptides | plain search | color-coded vial art |
-| `bacwater` | Bac Water & Supplies | Amazon | product photos |
-| `cold` | Coolers & Storage | Amazon | product photos |
-| `vendors` | *hidden* (`"hidden": true`) | — | — |
+| `compounds` | `/tier/peptides` | plain search | colour-coded vial art |
+| `bacwater` | `/tier/supplies` | Amazon | product photos |
+| `finds` | `/tier/amazon-finds` | Amazon | product photos |
+| `vendors`, `cold` | *hidden* | — | — |
 
 Amazon does not sell bacteriostatic water — every search returns empty vials,
-storage cases, or irrigation water. The **supplies** in that category
-(syringes, prep pads, sharps containers, filters) are stocked and monetize
-fine; the water itself needs a non-Amazon route.
+storage cases, or irrigation water. That category covers **supplies** instead
+(syringes, prep pads, sharps, filters), which Amazon stocks and which monetise.
 
-Vendors is hidden because nothing there is purchasable through an affiliate
-programme, and ranking gray-market sources is the riskiest content on the
-site. Flip `"hidden"` to re-enable it.
+Vendors stays hidden: nothing there is purchasable through an affiliate
+programme, and ranking gray-market sources is the riskiest content on the site.
 
-## Affiliate links
+## Vial art
 
-Amazon items link to `/dp/<ASIN>?tag=peptides03-20&ascsubtag=pn-tier-<category>`,
-matching the peptides.io convention so clicks attribute per tier list.
+`data/site.json` → `"vialArt": "photo" | "illustration"`. Both are
+red-liquid-on-grey, so hue rotation colour-codes either style per compound.
 
-Consider routing through the controller's `/api/lp/az` redirector instead of
-linking Amazon directly — otherwise these clicks produce no `lp_clicks` rows
-and no Meta CAPI `AffiliateClick`, which is the only conversion signal Amazon
-gives you.
+## Product images
+
+Downloaded to `public/img/products/<asin>.jpg` and served from our own origin.
+That is not just tidiness: the board draws every tile onto a canvas to produce
+the shareable PNG, and a cross-origin image taints that canvas and breaks export
+entirely.
 
 ## Sharing
 
 Board state encodes into the URL hash (`#s=…`): tier assignments, tray order,
-and any custom labels, colors, or title. Hash rather than query string, so it
+and any custom labels, colours, or title. Hash rather than query string, so it
 never reaches the server. Malformed links fall back to the default board.
 
 ## Email capture
 
-Clicking an Amazon-backed tile shows one modal: subscribe or skip. **The
-product link opens either way** — the offer is why they clicked. The signup is
-fire-and-forget (`sendBeacon`), so a subscribe outage can never delay or block
-the affiliate hand-off.
+Clicking an Amazon-backed tile shows one modal: subscribe or skip. **The product
+link opens either way** — the offer is why they clicked. The signup is
+fire-and-forget (`sendBeacon`), so a subscribe outage never delays the affiliate
+hand-off.
 
-`api/subscribe.js` writes to Supabase first (our list, our copy) and to a
-Mailgun mailing list second. Mailgun failing never fails the request.
+`app/api/subscribe/route.ts` writes to Supabase first (our list, our copy) and
+to a Mailgun list second. Mailgun failing never fails the request.
 
 Run `supabase/migrations/0001_subscribers.sql` once. It enables RLS with no
 policies on purpose: the anon key ships in the browser, so without it the
 subscriber list would be world-readable.
 
-Needed in the Vercel env:
+## Environment
+
+Copy `.env.example` to `.env.local`. `.gitignore` excludes `.env*`.
 
 | Var | Purpose |
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | project URL |
 | `SUPABASE_SECRET_KEY` | server-only, bypasses RLS |
 | `MAILGUN_API_KEY` | private API key |
-| `MAILGUN_LIST` | list address, e.g. `deals@mg.peptidenugget.com` |
-| `MAILGUN_REGION` | `eu` for EU accounts, otherwise omit |
+| `MAILGUN_LIST` | `deals@mg.peptidenugget.com` |
+| `APIFY_TOKEN` | Amazon scraping |
 
-## Vial art
+## Infrastructure
 
-`data/site.json` -> `"vialArt": "photo" | "illustration"`, then `npm run build`.
-Both are red-liquid-on-grey, so hue-rotation colour-codes either style.
-
-## Environment
-
-Copy `.env.example` to `.env.local`. Never commit real values — `.gitignore`
-already excludes `.env*`.
+- **DNS** — GoDaddy. Apex `A → 76.76.21.21`, `www CNAME → cname.vercel-dns.com`.
+  Mailgun SPF/DKIM/MX live on the `mg.` subdomain. Pre-Vercel state is backed up
+  in `ops/dns-backup-before-vercel.json`.
+- **Mailgun** — sending domain `mg.peptidenugget.com` (verified), list
+  `deals@mg.peptidenugget.com`.
+- **Affiliate** — Amazon Associates tag `peptides03-20`, with
+  `ascsubtag=pn-tier-<category>` so clicks attribute per tier list.

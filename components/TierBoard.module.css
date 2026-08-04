@@ -1,0 +1,206 @@
+/* ---------- tabs + share ---------- */
+.boardTop { display: flex; align-items: flex-start; gap: 18px; margin: 26px 0 18px; }
+.cats { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
+.cat {
+  background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+  padding: 7px 13px; border-radius: 999px; cursor: pointer; font-size: 13px;
+  font-weight: 500; white-space: nowrap; transition: .12s;
+}
+.cat:hover { color: var(--text); border-color: #4a5160; }
+.cat[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+
+.share {
+  margin-left: auto; display: flex; align-items: stretch; gap: 10px;
+  background: rgba(61,220,132,.09); border: 1px solid rgba(61,220,132,.45);
+  border-radius: 10px; padding: 8px 10px;
+}
+.shareCopy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.shareTitle { font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--money); font-weight: 700; }
+.shareUrl {
+  width: 250px; max-width: 44vw; background: #0f1114; border: 1px solid var(--line);
+  color: var(--muted); border-radius: 6px; padding: 5px 8px; cursor: pointer;
+  font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; text-overflow: ellipsis;
+}
+.shareUrl:hover { border-color: var(--money); color: var(--text); }
+.shareBtn {
+  background: var(--money); border: 1px solid var(--money); color: #06180e;
+  font-weight: 800; font-size: 14.5px; padding: 0 22px; border-radius: 8px;
+  white-space: nowrap; cursor: pointer;
+}
+.shareBtn:hover { filter: brightness(1.1); }
+.copied { background: #23a95f; border-color: #23a95f; color: #eafff2; }
+
+/* ---------- title + callout ---------- */
+.titleBar { margin-bottom: 14px; }
+.boardTitle {
+  font-size: 24px; font-weight: 700; letter-spacing: -.02em; padding: 4px 8px;
+  border-radius: 6px; outline: none; display: inline-block; min-width: 200px; margin: 0;
+}
+.boardTitle:focus { background: var(--panel-2); box-shadow: 0 0 0 2px var(--accent); }
+
+/* People skim, so this gets a tinted pill, a looping drag demo, and a slow
+   breathing glow rather than quiet grey text. */
+.callout {
+  display: inline-flex; align-items: center; gap: 13px;
+  margin: 9px 0 0 8px; padding: 11px 18px 11px 13px;
+  background: linear-gradient(90deg, rgba(255,128,128,.20), rgba(255,128,128,.05));
+  border: 1px solid rgba(255,128,128,.5); border-radius: 10px;
+  font-size: 14px; color: var(--text);
+  animation: calloutGlow 2.8s ease-in-out infinite;
+}
+.callout b { color: var(--accent); font-weight: 700; }
+.sep { color: var(--faint); margin: 0 3px; }
+/* The money line is the point of the page — green, heavy and lit so it
+   separates from the coral chrome instead of blending into it. */
+.price {
+  color: var(--money); font-weight: 800;
+  text-shadow: 0 0 16px rgba(61,220,132,.5);
+  animation: pricePulse 2.8s ease-in-out infinite;
+}
+.track { position: relative; width: 38px; height: 20px; flex: 0 0 38px; }
+.track i {
+  position: absolute; top: 3px; left: 0; width: 15px; height: 15px; border-radius: 3px;
+  background: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,.55);
+  animation: calloutDrag 2.1s cubic-bezier(.45,0,.25,1) infinite;
+}
+.track::after {
+  content: ""; position: absolute; top: 3px; right: 0; width: 15px; height: 15px;
+  border-radius: 3px; border: 1px dashed rgba(255,128,128,.55);
+}
+@keyframes calloutDrag {
+  0%, 10% { transform: translateX(0) scale(1); }
+  45%, 62% { transform: translateX(23px) scale(1.1); }
+  92%, 100% { transform: translateX(0) scale(1); }
+}
+@keyframes calloutGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,128,128,0); }
+  50% { box-shadow: 0 0 0 6px rgba(255,128,128,.09); }
+}
+@keyframes pricePulse {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.22); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .callout, .track i, .price { animation: none; }
+}
+
+/* ---------- board ---------- */
+.board { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #0f1114; }
+.row { display: flex; align-items: stretch; border-bottom: 1px solid var(--line); min-height: calc(var(--tile) + var(--gap) * 2); }
+.row:last-child { border-bottom: 0; }
+.rowLabel {
+  width: var(--label-w); flex: 0 0 var(--label-w); display: flex; align-items: center;
+  justify-content: center; padding: 8px 10px; position: relative; cursor: pointer;
+}
+.rowLabel span {
+  color: #14171a; font-weight: 700; font-size: 17px; text-align: center; outline: none;
+  width: 100%; word-break: break-word; line-height: 1.2;
+}
+.rowLabel input[type=color] { position: absolute; inset: 0; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+.rowItems {
+  flex: 1; display: flex; flex-wrap: wrap; gap: var(--gap); padding: var(--gap);
+  align-content: flex-start; background: var(--panel); min-height: calc(var(--tile) + var(--gap) * 2);
+}
+.rowTools { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px; background: var(--panel); border-left: 1px solid var(--line); }
+.rowTools button {
+  width: 24px; height: 22px; border: 0; border-radius: 4px; background: var(--panel-2);
+  color: var(--muted); cursor: pointer; font-size: 12px; line-height: 1;
+}
+.rowTools button:hover { background: #3a4150; color: var(--text); }
+.over { background: var(--accent-soft) !important; }
+
+/* ---------- tiles ---------- */
+.tile {
+  width: var(--tile); height: var(--tile); border-radius: 7px; overflow: hidden;
+  position: relative; cursor: grab; user-select: none; -webkit-user-select: none;
+  -webkit-user-drag: none; touch-action: none; text-decoration: none; color: var(--text);
+  background: var(--panel-2); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  transition: transform .08s, box-shadow .08s; flex: 0 0 auto;
+}
+.tile:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.45); z-index: 2; }
+.accentBar { position: absolute; left: 0; right: 0; top: 0; height: 4px; }
+/* contain: the vial is centred and never cropped, and stays sharp — the
+   blurred label is in the artwork itself. */
+.vialImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+/* product shots are already tight crops, so they fill the tile */
+.productImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.name {
+  padding: 8px 5px 5px; font-size: 11.5px; font-weight: 600; line-height: 1.2;
+  letter-spacing: -.01em; word-break: break-word; hyphens: auto;
+}
+.nameOver {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 4px; font-size: 10px;
+  font-weight: 600; line-height: 1.15; word-break: break-word;
+  background: linear-gradient(transparent, rgba(0,0,0,.88) 45%);
+}
+.go { position: absolute; top: 6px; right: 5px; font-size: 10px; line-height: 1; color: rgba(232,234,237,.32); pointer-events: none; }
+.tile:hover .go { color: var(--accent); }
+.dragging { opacity: .28; }
+
+.ghost {
+  position: fixed; z-index: 999; pointer-events: none; width: var(--tile); height: var(--tile);
+  border-radius: 7px; box-shadow: 0 12px 32px rgba(0,0,0,.65); transform: rotate(-3deg) scale(1.06);
+  opacity: .95; display: none;
+}
+
+/* ---------- pool + toolbar ---------- */
+.poolHead { display: flex; align-items: center; gap: 10px; margin: 18px 0 8px; }
+.poolHead h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0; font-weight: 600; }
+.count { font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); }
+.pool {
+  display: flex; flex-wrap: wrap; gap: var(--gap); padding: 10px; min-height: 120px;
+  background: var(--panel); border: 1px dashed var(--line); border-radius: 10px; align-content: flex-start;
+}
+.poolEmpty { color: var(--muted); font-size: 13px; padding: 8px; }
+.toolbar { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.btn {
+  background: var(--panel); border: 1px solid var(--line); color: var(--text);
+  padding: 8px 14px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500;
+}
+.btn:hover { background: var(--panel-2); border-color: #4a5160; }
+.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.primary:hover { filter: brightness(1.08); }
+
+/* ---------- capture modal ---------- */
+.modalBack {
+  position: fixed; inset: 0; background: rgba(8,9,11,.78); z-index: 1000;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  backdrop-filter: blur(3px);
+}
+.modal {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  max-width: 430px; width: 100%; padding: 26px 26px 22px; text-align: center;
+  box-shadow: 0 24px 70px rgba(0,0,0,.6);
+}
+.mark { height: 26px; width: auto; margin: 0 auto 16px; display: block; }
+.modal h2 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.02em; }
+.modal h2 em { font-style: normal; color: var(--money); }
+.modal p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+.modal input[type=email] {
+  width: 100%; padding: 11px 13px; border-radius: 8px; border: 1px solid var(--line);
+  background: #0f1114; color: var(--text); font-size: 14.5px; margin-bottom: 10px;
+}
+.modal input[type=email]:focus { outline: none; border-color: var(--money); }
+.goBtn {
+  width: 100%; padding: 12px; border: 0; border-radius: 8px; cursor: pointer;
+  background: var(--money); color: #06180e; font-weight: 800; font-size: 15px;
+}
+.goBtn:hover { filter: brightness(1.08); }
+.skip {
+  display: block; width: 100%; margin-top: 12px; background: none; border: 0;
+  color: var(--muted); font-size: 13px; cursor: pointer; text-decoration: underline;
+}
+.skip:hover { color: var(--text); }
+.err { color: #ff8080; font-size: 12.5px; margin: 0 0 10px !important; min-height: 1em; }
+.fine { margin: 14px 0 0 !important; font-size: 11px; color: var(--faint); line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .boardTop { flex-direction: column; }
+  .share { margin-left: 0; width: 100%; }
+  .shareUrl { width: 100%; max-width: none; }
+  .shareCopy { flex: 1; }
+}
+@media (max-width: 720px) {
+  .rowLabel span { font-size: 14px; }
+}

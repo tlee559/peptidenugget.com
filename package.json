@@ -1,11 +1,25 @@
 {
   "name": "peptidenugget",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Community tier lists for peptides, supplies, and cold storage gear.",
+  "description": "Community tier lists for peptides, supplies, and Amazon finds.",
   "scripts": {
-    "build": "node build.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "scrape": "node scripts/scrape-amazon.js",
-    "open": "node build.js && open prototype/tier-board.html"
+    "assets": "node scripts/build-assets.js"
+  },
+  "dependencies": {
+    "next": "^15.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "typescript": "^5.7.3"
   }
 }

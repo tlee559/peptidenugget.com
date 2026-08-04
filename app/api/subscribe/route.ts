@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 /**
  * POST /api/subscribe   { email, source, category, product }
  *
@@ -7,19 +9,14 @@
  *   2. Mailgun mailing list — only if MAILGUN_API_KEY + MAILGUN_LIST are set.
  *
  * Mailgun failing never fails the request: the caller is mid-affiliate-click
- * and about to be handed to Amazon. Losing a newsletter signup is cheap;
- * blocking the commission is not.
- *
- * Env (Vercel project settings):
- *   NEXT_PUBLIC_SUPABASE_URL
- *   SUPABASE_SECRET_KEY        server-only, bypasses RLS
- *   MAILGUN_API_KEY            private API key (starts "key-" or a raw token)
- *   MAILGUN_LIST               list address, e.g. deals@mg.peptidenugget.com
- *   MAILGUN_REGION             "eu" for EU accounts; anything else = US
+ * and about to be handed to Amazon. Losing a signup is cheap; blocking the
+ * commission is not.
  */
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
 
-async function toSupabase(row) {
+type Result = { ok: boolean; error?: string; skipped?: string };
+
+async function toSupabase(row: Record<string, unknown>): Promise<Result> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return { ok: false, skipped: "supabase not configured" };
@@ -30,16 +27,14 @@ async function toSupabase(row) {
       apikey: key,
       authorization: `Bearer ${key}`,
       "content-type": "application/json",
-      // Re-subscribing is a no-op rather than a 409.
-      prefer: "resolution=merge-duplicates,return=minimal",
+      prefer: "resolution=merge-duplicates,return=minimal",   // re-signup is a no-op
     },
     body: JSON.stringify(row),
   });
-  if (!r.ok) return { ok: false, error: `supabase ${r.status}: ${(await r.text()).slice(0, 160)}` };
-  return { ok: true };
+  return r.ok ? { ok: true } : { ok: false, error: `supabase ${r.status}: ${(await r.text()).slice(0, 160)}` };
 }
 
-async function toMailgun(email, vars) {
+async function toMailgun(email: string, vars: Record<string, string>): Promise<Result> {
   const key = process.env.MAILGUN_API_KEY;
   const list = process.env.MAILGUN_LIST;
   if (!key || !list) return { ok: false, skipped: "mailgun not configured" };
@@ -48,10 +43,9 @@ async function toMailgun(email, vars) {
   const body = new URLSearchParams({
     address: email,
     subscribed: "yes",
-    upsert: "yes",                       // idempotent: re-signup just updates
+    upsert: "yes",                       // idempotent
     vars: JSON.stringify(vars),
   });
-
   const r = await fetch(`https://${host}/v3/lists/${encodeURIComponent(list)}/members`, {
     method: "POST",
     headers: {
@@ -60,41 +54,32 @@ async function toMailgun(email, vars) {
     },
     body,
   });
-  if (r.ok) return { ok: true };
-  return { ok: false, error: `mailgun ${r.status}: ${(await r.text()).slice(0, 160)}` };
+  return r.ok ? { ok: true } : { ok: false, error: `mailgun ${r.status}: ${(await r.text()).slice(0, 160)}` };
 }
 
-module.exports = async (req, res) => {
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({ error: "method not allowed" });
-  }
+export async function POST(req: Request) {
+  let payload: Record<string, string> = {};
+  try { payload = await req.json(); } catch { /* sendBeacon Blob or bad body */ }
 
-  let payload = req.body;
-  if (typeof payload === "string") { try { payload = JSON.parse(payload); } catch { payload = null; } }
-  // sendBeacon posts a Blob; some runtimes hand it over unparsed.
-  if (!payload && req.body) { try { payload = JSON.parse(String(req.body)); } catch {} }
+  const email = String(payload.email || "").trim().toLowerCase();
+  if (!EMAIL_RE.test(email)) return NextResponse.json({ error: "invalid email" }, { status: 400 });
 
-  const email = (payload?.email || "").trim().toLowerCase();
-  if (!EMAIL_RE.test(email)) return res.status(400).json({ error: "invalid email" });
-
-  const source = String(payload?.source || "unknown").slice(0, 40);
-  const category = String(payload?.category || "").slice(0, 40);
-  const product = String(payload?.product || "").slice(0, 500);
+  const source = String(payload.source || "unknown").slice(0, 40);
+  const category = String(payload.category || "").slice(0, 40);
+  const product = String(payload.product || "").slice(0, 500);
 
   const [supa, mg] = await Promise.allSettled([
     toSupabase({ email, source, category, product, created_at: new Date().toISOString() }),
     toMailgun(email, { source, category }),
   ]);
+  const val = (r: PromiseSettledResult<Result>): Result =>
+    r.status === "fulfilled" ? r.value : { ok: false, error: String(r.reason) };
 
-  const detail = {
-    supabase: supa.status === "fulfilled" ? supa.value : { ok: false, error: String(supa.reason) },
-    mailgun: mg.status === "fulfilled" ? mg.value : { ok: false, error: String(mg.reason) },
-  };
+  const detail = { supabase: val(supa), mailgun: val(mg) };
   if (!detail.supabase.ok && !detail.supabase.skipped) console.error("subscribe/supabase", detail.supabase);
   if (!detail.mailgun.ok && !detail.mailgun.skipped) console.error("subscribe/mailgun", detail.mailgun);
 
   // 200 unless BOTH sinks failed — the visitor is Amazon-bound either way.
   const stored = detail.supabase.ok || detail.mailgun.ok;
-  return res.status(stored ? 200 : 502).json({ ok: stored, detail });
-};
+  return NextResponse.json({ ok: stored, detail }, { status: stored ? 200 : 502 });
+}

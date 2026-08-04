@@ -3,7 +3,6 @@
 .env.*
 !.env.example
 *.pem
-.supabase/
 
 # deps / build
 node_modules/
@@ -12,6 +11,8 @@ out/
 dist/
 build/
 .vercel/
+next-env.d.ts
+*.tsbuildinfo
 
 # scratch
 *.log
