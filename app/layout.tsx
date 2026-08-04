@@ -4,7 +4,9 @@ import "./globals.css";
 import { visibleCategories, KEY_TO_SLUG } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://peptidenugget.com"),
+  // www is the served host — the apex 308s to it. A canonical pointing at a
+  // redirect is a weak signal, so canonicals must resolve directly.
+  metadataBase: new URL("https://www.peptidenugget.com"),
   title: {
     default: "PeptideNugget — Community Peptide Tier Lists",
     template: "%s — PeptideNugget",
