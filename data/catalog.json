@@ -1,0 +1,653 @@
+{
+  "compounds": {
+    "label": "Peptides",
+    "title": "Peptide Tier List",
+    "preset": "grade",
+    "storefront": "search",
+    "vials": true,
+    "items": [
+      {
+        "name": "BPC-157",
+        "tier": 0
+      },
+      {
+        "name": "Tirzepatide",
+        "tier": 0
+      },
+      {
+        "name": "Retatrutide",
+        "tier": 0
+      },
+      {
+        "name": "Semaglutide",
+        "tier": 0
+      },
+      {
+        "name": "TB-500",
+        "tier": 1
+      },
+      {
+        "name": "Ipamorelin",
+        "tier": 1
+      },
+      {
+        "name": "CJC-1295",
+        "tier": 1
+      },
+      {
+        "name": "Tesamorelin",
+        "tier": 1
+      },
+      {
+        "name": "GHK-Cu",
+        "tier": 1
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 2
+      },
+      {
+        "name": "Epitalon",
+        "tier": 2
+      },
+      {
+        "name": "PT-141",
+        "tier": 2
+      },
+      {
+        "name": "NAD+",
+        "tier": 2
+      },
+      {
+        "name": "Thymosin α-1",
+        "tier": 2
+      },
+      {
+        "name": "Semax",
+        "tier": 3
+      },
+      {
+        "name": "Selank",
+        "tier": 3
+      },
+      {
+        "name": "5-Amino-1MQ",
+        "tier": 3
+      },
+      {
+        "name": "KPV",
+        "tier": 3
+      },
+      {
+        "name": "SS-31",
+        "tier": 3
+      },
+      {
+        "name": "AOD-9604",
+        "tier": 4
+      },
+      {
+        "name": "Sermorelin",
+        "tier": 4
+      },
+      {
+        "name": "Hexarelin",
+        "tier": 4
+      },
+      {
+        "name": "IGF-1 LR3",
+        "tier": 4
+      },
+      {
+        "name": "Melanotan II",
+        "tier": 5
+      },
+      {
+        "name": "Cagrilintide",
+        "tier": -1
+      },
+      {
+        "name": "Glutathione",
+        "tier": -1
+      }
+    ]
+  },
+  "vendors": {
+    "hidden": true,
+    "label": "Vendors",
+    "title": "Vendor Tier List",
+    "preset": "vendor",
+    "storefront": "search",
+    "items": [
+      {
+        "name": "Vendor Alpha",
+        "tier": 0
+      },
+      {
+        "name": "Nordic Research",
+        "tier": 0
+      },
+      {
+        "name": "Aurora Labs",
+        "tier": 1
+      },
+      {
+        "name": "Meridian Peptides",
+        "tier": 1
+      },
+      {
+        "name": "Cobalt Bio",
+        "tier": 2
+      },
+      {
+        "name": "Lighthouse Research",
+        "tier": 2
+      },
+      {
+        "name": "Summit Compounds",
+        "tier": 3
+      },
+      {
+        "name": "Vertex Labs",
+        "tier": 3
+      },
+      {
+        "name": "Harbor Peptides",
+        "tier": 4
+      },
+      {
+        "name": "Ridgeline Bio",
+        "tier": 4
+      },
+      {
+        "name": "Copperline Labs",
+        "tier": 5
+      },
+      {
+        "name": "Sable Research",
+        "tier": -1
+      }
+    ]
+  },
+  "bacwater": {
+    "label": "Supplies & Storage",
+    "title": "Injection Supplies & Storage Tier List",
+    "preset": "grade",
+    "storefront": "amazon",
+    "items": [
+      {
+        "name": "31G 5/16 Insulin",
+        "tier": 1,
+        "search": "31 gauge 5/16 insulin syringes",
+        "match": [
+          "31g",
+          "syringe"
+        ],
+        "asin": "B0859JR6WN",
+        "image": "https://m.media-amazon.com/images/I/618G8rx2JmL.jpg",
+        "url": "https://www.amazon.com/dp/B0859JR6WN?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "EasyTouch U-100 Insulin Syringe with Needle, 31G 0.5cc 5/16-Inch (8mm), Box of 100"
+      },
+      {
+        "name": "Alcohol Prep Pads",
+        "tier": 1,
+        "search": "sterile alcohol prep pads",
+        "match": [
+          "alcohol",
+          "prep"
+        ],
+        "asin": "B002XK131U",
+        "image": "https://m.media-amazon.com/images/I/21W47JBJ9sL.jpg",
+        "url": "https://www.amazon.com/dp/B002XK131U?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "Curad Alcohol Disinfectant Prep Pads, 2-ply, Medium Size, 200 Count"
+      },
+      {
+        "name": "29G 1/2 Insulin",
+        "tier": 2,
+        "search": "29 gauge half inch insulin syringes",
+        "match": [
+          "29g",
+          "syringe"
+        ],
+        "asin": "B0F1MQCGZK",
+        "image": "https://m.media-amazon.com/images/I/51ACSNAOpYL.jpg",
+        "url": "https://www.amazon.com/dp/B0F1MQCGZK?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "U-100 Syringes with Needle 1ml/cc 29G 1/2'' Disposable Syringe, Individual Wrapped, 100 PACK"
+      },
+      {
+        "name": "Sharps Container",
+        "tier": 2,
+        "search": "sharps container 1 quart",
+        "match": [
+          "sharps"
+        ],
+        "asin": "B0FMYNYP4G",
+        "image": "https://m.media-amazon.com/images/I/41AOh3QMHpL.jpg",
+        "url": "https://www.amazon.com/dp/B0FMYNYP4G?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "3-Pack Sharps Container for Home Use and Professional | 1 Quart Biohazard Needle and Syringe Disposal, Needle Disposal Small Portable Container for Travel & Home Use"
+      },
+      {
+        "name": "Vial Adapter",
+        "tier": 3,
+        "search": "vial adapter luer lock",
+        "match": [
+          "adapter"
+        ],
+        "asin": "B0GL6JCVQZ",
+        "image": "https://m.media-amazon.com/images/I/31UcDAXWOhL.jpg",
+        "url": "https://www.amazon.com/dp/B0GL6JCVQZ?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "25PCS Vial Access Device with Luer Adapter, Needleless Connector with Transfer Tip, Sterile Individually Wrapped&for Veterinary and Lab"
+      },
+      {
+        "name": "0.22µm Filter",
+        "tier": 3,
+        "search": "0.22 micron syringe filter",
+        "match": [
+          "filter"
+        ],
+        "asin": "B07TVHBTD4",
+        "image": "https://m.media-amazon.com/images/I/41xOUw4N93L.jpg",
+        "url": "https://www.amazon.com/dp/B07TVHBTD4?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "Syringe Filter PTFE Membrane 13mm Diameter 0.22μm Pore Size Pack of 100"
+      },
+      {
+        "name": "Luer Lock 3ml",
+        "tier": -1,
+        "search": "3ml luer lock syringe",
+        "match": [
+          "luer",
+          "3ml"
+        ],
+        "asin": "B0CZHDJ235",
+        "image": "https://m.media-amazon.com/images/I/61Z-K7jDkiL.jpg",
+        "url": "https://www.amazon.com/dp/B0CZHDJ235?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "100 Pack 3ml/cc Plastic Syringe Luer Lock Tip - Liquid Measuring Syringe Tools (No Needle) - Sterile Individually Sealed Wrapped"
+      },
+      {
+        "name": "Sterile Saline 0.9%",
+        "tier": 0,
+        "search": "0.9% sodium chloride saline vials 15ml",
+        "match": [
+          "sodium chloride"
+        ],
+        "asin": "B0HCH6BRRY",
+        "image": "https://m.media-amazon.com/images/I/51yEvcYUpxL.jpg",
+        "url": "https://www.amazon.com/dp/B0HCH6BRRY?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "0.9% Sodium Chloride Saline Solution, Sterile Daily Nasal & Skin Cleansing for Babies, Kids & Adults, Single-Use Saline Vials for Nose Care & Minor Wound Cleaning, 20 Count 15ml"
+      },
+      {
+        "name": "Empty Sterile Vials",
+        "tier": 1,
+        "search": "10ml sterile empty glass vials for injection",
+        "match": [
+          "vials"
+        ],
+        "asin": "B0FFG6Y3Z4",
+        "image": "https://m.media-amazon.com/images/I/41gQROYQ8VL.jpg",
+        "url": "https://www.amazon.com/dp/B0FFG6Y3Z4?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "FURWEY 10ML Sterile Vials, Glass Empty Vials for Injection, 20 Pack | Sterile Vials with Self Healing Injection Port and Sealing Cap, Glass Sterile Vials for Injections"
+      },
+      {
+        "name": "Glass Vials 30ml",
+        "tier": 2,
+        "search": "30ml glass vials 2 pack ultra clean",
+        "match": [
+          "vials"
+        ],
+        "asin": "B0H8D8FFDM",
+        "image": "https://m.media-amazon.com/images/I/31uduWNorkL.jpg",
+        "url": "https://www.amazon.com/dp/B0H8D8FFDM?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "30ML Clear Glass Vials, Ultra Clean, 2 Pack"
+      },
+      {
+        "name": "Peptide Storage Case",
+        "tier": 1,
+        "search": "peptide storage case 6 vials 30ml bac water",
+        "match": [
+          "case"
+        ],
+        "asin": "B0G5ZNXCWJ",
+        "image": "https://m.media-amazon.com/images/I/716VEGVMq7L.jpg",
+        "url": "https://www.amazon.com/dp/B0G5ZNXCWJ?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "17 Slots Dual-Size 30ml and 3ml Peptide Case, BAC Water and Insulin Vial Case, Peptide Storage Case for Fridge and Travel, Fits Standard Vials (Case Only)"
+      },
+      {
+        "name": "BAC Water Case",
+        "tier": 3,
+        "search": "30ml bacteriostatic water bottle protective travel case",
+        "match": [
+          "case"
+        ],
+        "asin": "B0GVQS8CYL",
+        "image": "https://m.media-amazon.com/images/I/81rIu94VhPL.jpg",
+        "url": "https://www.amazon.com/dp/B0GVQS8CYL?tag=peptides03-20&ascsubtag=pn-tier-bacwater",
+        "matched_title": "COBI Market Sales Peptide Case for Fridge | Travel Peptides Vial Storage | Hard Refrigerator Carrying Container (Case Only)"
+      }
+    ]
+  },
+  "cold": {
+    "label": "Peptide Cold Storage",
+    "title": "Peptide Cold Storage Tier List",
+    "preset": "grade",
+    "storefront": "amazon",
+    "items": [
+      {
+        "name": "Frio Wallet",
+        "tier": 2,
+        "search": "FRIO insulin cooling wallet",
+        "match": [
+          "frio"
+        ],
+        "asin": "B00022628K",
+        "image": "https://m.media-amazon.com/images/I/71IEKvOzqIL.jpg",
+        "url": "https://www.amazon.com/dp/B00022628K?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "FRIO Cooling Wallet - Insulin & GLP-1 Cooler for 45+ Hours - GLP-1 Shots | Evaporative cooling for insulin pens and medication, no ice or refrigeration needed, reusable portable travel storage"
+      },
+      {
+        "name": "Insulin Travel Case",
+        "tier": 3,
+        "search": "insulin cooler travel case",
+        "match": [
+          "insulin"
+        ],
+        "asin": "B0D9BG76C8",
+        "image": "https://m.media-amazon.com/images/I/71OC9ZoxdDL.jpg",
+        "url": "https://www.amazon.com/dp/B0D9BG76C8?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "AUVON Insulin Cooler Travel Case, 220g TSA Approved Ice Pack, Handle Design | Cold Vacuum Insulin Bottle with Medical ID Tag, Med Anti-Freezing Pouch, Diabetes Travel Case, Portable for Daily & Trips"
+      },
+      {
+        "name": "Mini Fridge",
+        "tier": -1,
+        "search": "mini fridge 1.6 cu ft",
+        "match": [
+          "fridge"
+        ],
+        "asin": "B01DZQI6YW",
+        "image": "https://m.media-amazon.com/images/I/613tMWnMB5L.jpg",
+        "url": "https://www.amazon.com/dp/B01DZQI6YW?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "BLACK+DECKER 1.7 Cu. Ft. Compact Refrigerator, Energy Star, BCRK17B, Black | Energy Star Certified, Single Door Mini Fridge with Chiller Compartment, Personal Fridge for Home or Dorm, R600a Refrigerant"
+      },
+      {
+        "name": "Compact Freezer",
+        "tier": -1,
+        "search": "compact upright freezer",
+        "match": [
+          "freezer"
+        ],
+        "asin": "B084P2Y46C",
+        "image": "https://m.media-amazon.com/images/I/71GJYx2pyqL.jpg",
+        "url": "https://www.amazon.com/dp/B084P2Y46C?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "Whynter Upright Freezer/Fridge Convertible 3 Cu Ft Energy Star, CUF-301SS | Adjustable Thermostat and Security Lock, Energy Star Rated, Reversible Door, Adds Compact Frozen Storage at Home"
+      },
+      {
+        "name": "4AllFamily Cooler",
+        "tier": 0,
+        "search": "4AllFamily insulin cooler travel case",
+        "match": [
+          "4allfamily"
+        ],
+        "asin": "B094XHJFPM",
+        "image": "https://m.media-amazon.com/images/I/61yRU51Xu1L.jpg",
+        "url": "https://www.amazon.com/dp/B094XHJFPM?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "4ALLFAMILY 3-In-1 Explorer Insulin Cooler Travel Case - Magenta | TSA Approved Insulin Travel Cooler with 72H Cooling, USB Power, and Ice Pack for Temperature-Sensitive Medications"
+      },
+      {
+        "name": "DISONCARE Cooler",
+        "tier": 0,
+        "search": "DISONCARE insulin cooler travel case",
+        "match": [
+          "disoncare"
+        ],
+        "asin": "B0DDC2ZN2P",
+        "image": "https://m.media-amazon.com/images/I/71YQHigBrkL.jpg",
+        "url": "https://www.amazon.com/dp/B0DDC2ZN2P?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "DISONCARE Odyssey 3Pens Insulin Cooler Travel Case with Digital Display, TSA Approved Ice Packs, Diabetic Medication Travel Bag, EpiPen Case with QR Medical Tag (Obsidian Black)"
+      },
+      {
+        "name": "MedActiv iCool",
+        "tier": 1,
+        "search": "MedActiv iCool insulin cooler bag",
+        "match": [
+          "medactiv"
+        ]
+      },
+      {
+        "name": "Insulin Pen Case",
+        "tier": 2,
+        "search": "insulin pen cooler travel case",
+        "match": [
+          "insulin",
+          "pen"
+        ],
+        "asin": "B0CZ93YW2S",
+        "image": "https://m.media-amazon.com/images/I/81SPhlnf86L.jpg",
+        "url": "https://www.amazon.com/dp/B0CZ93YW2S?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "AUVON Lightweight Insulin Cooler Travel Case, 3-Layer Thickened Insulation | 2 x 90g TSA Approved Ice Packs, Compact Medication Cooler for Travel, Insulin Pens & Diabetic Supplie Storage, Well-Insulated"
+      },
+      {
+        "name": "TSA Medication Cooler",
+        "tier": 1,
+        "search": "TSA approved medication travel cooler with ice pack",
+        "match": [
+          "cooler"
+        ],
+        "asin": "B0D2W35PP8",
+        "image": "https://m.media-amazon.com/images/I/91u5TnV9N6L.jpg",
+        "url": "https://www.amazon.com/dp/B0D2W35PP8?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "Insulin Cooler Travel Case, 2x150g Ice Pack TSA Approved, Purple | EVA Insulation Travel Medicine Kit for 1-5 Pens & Diabetic Supplies, Diabetes Care, Portable Handle for Daily Use & Trip"
+      },
+      {
+        "name": "Portable Med Fridge",
+        "tier": 2,
+        "search": "portable medicine refrigerator insulin 12V",
+        "match": [
+          "refrigerator"
+        ],
+        "asin": "B0BPM6XDH2",
+        "image": "https://m.media-amazon.com/images/I/7103sH8aruL.jpg",
+        "url": "https://www.amazon.com/dp/B0BPM6XDH2?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "BougeRV 12v refrigerator 23 Quart, -8℉~50℉ Portable Freezer for Car, Black | No Ice Needed, Use as Fridge or Freezer, Fast 15-Min Cool to 32°F, 12/24V DC, 110V AC, Electric Cooler for Camping, Road Trip"
+      },
+      {
+        "name": "Gel Ice Packs",
+        "tier": 3,
+        "search": "reusable gel ice packs for medication shipping",
+        "match": [
+          "ice pack"
+        ],
+        "asin": "B00BT5A3DO",
+        "image": "https://m.media-amazon.com/images/I/71zToryVeAL.jpg",
+        "url": "https://www.amazon.com/dp/B00BT5A3DO?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "ICE-BRIX Reusable Gel Ice Packs for Shipping, 6 x 5.75 x 1 in White (24 Pack) - Medium Cold Packs for Lunch Boxes, Medication Mailers, Meal Prep, Coolers & Perishables"
+      },
+      {
+        "name": "Vial Fridge Organizer",
+        "tier": 3,
+        "search": "refrigerator medication vial storage organizer bin",
+        "match": [
+          "organizer"
+        ],
+        "asin": "B0GVJH2ND2",
+        "image": "https://m.media-amazon.com/images/I/81BqRkdHu9L.jpg",
+        "url": "https://www.amazon.com/dp/B0GVJH2ND2?tag=peptides03-20&ascsubtag=pn-tier-cold",
+        "matched_title": "Peptide Vial Case for Fridge, 10-Slot Vial Organizer for 1-10ml Storage | Fits 1ml, 3ml, 5ml & 10ml vials for peptide, GLP-1 and insulin storage, EVA Shell, Shock Resistant, Travel & Daily Use"
+      }
+    ],
+    "hidden": true
+  },
+  "finds": {
+    "label": "Amazon Finds",
+    "title": "Copper Peptide (GHK-Cu) Tier List",
+    "preset": "grade",
+    "storefront": "amazon",
+    "discover": {
+      "search": "GHK-Cu copper peptide serum",
+      "match": [
+        "copper"
+      ],
+      "limit": 20
+    },
+    "items": [
+      {
+        "name": "The Ordinary Multi-Peptide +",
+        "tier": 0,
+        "asin": "B0C9DXGXZ3",
+        "image": "https://m.media-amazon.com/images/I/31lyb-1N0qL.jpg",
+        "url": "https://www.amazon.com/dp/B0C9DXGXZ3?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "The Ordinary Multi-Peptide + Copper Peptides 1%, GHK-Cu Anti-Aging Serum for Fine Lines and Skin Elasticity"
+      },
+      {
+        "name": "GHK-Cu Copper Peptide for",
+        "tier": 0,
+        "asin": "B0GR6HWJBX",
+        "image": "https://m.media-amazon.com/images/I/51X4IPWw5RL.jpg",
+        "url": "https://www.amazon.com/dp/B0GR6HWJBX?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptide for Hair & Scalp Serum, Hair Growth Serum with Copper Tripeptide-1, Niacinamide, Panthenol, Strengthens Hair & Scalp, Reduces Hairs Thinning,1.69 fl oz"
+      },
+      {
+        "name": "GHK-Cu Copper Peptide Face",
+        "tier": 1,
+        "asin": "B0GY2RP96N",
+        "image": "https://m.media-amazon.com/images/I/41Pp6aQOLvL.jpg",
+        "url": "https://www.amazon.com/dp/B0GY2RP96N?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptide Face Cream with Multi-Peptide Complex & Niacinamide | Firming Moisturizer Helps Reduce the Appearance of Fine Lines & Wrinkles, Hydrating Facial Cream for Women & Men, 1.76 oz"
+      },
+      {
+        "name": "PDRN Copper Peptides Serum",
+        "tier": 1,
+        "asin": "B0H5J3TNHB",
+        "image": "https://m.media-amazon.com/images/I/417YH8PWuLL.jpg",
+        "url": "https://www.amazon.com/dp/B0H5J3TNHB?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "PDRN Copper Peptides Serum for Face with Liposomal 4% PDRN & 2% GHK-Cu | Peptides Serum with Hyaluronic Acid, Hydrolyzed Collagen Korean Anti-Aging Serum for Fine Lines, Smooth-Looking-1 Fl Oz"
+      },
+      {
+        "name": "GHK-Cu Copper Peptides Hair",
+        "tier": 2,
+        "asin": "B0GWRF7GGY",
+        "image": "https://m.media-amazon.com/images/I/41xWwvGDEVL.jpg",
+        "url": "https://www.amazon.com/dp/B0GWRF7GGY?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptides Hair & Scalp Serum, Fresh Scent, 1.69 Fl Oz | Dual Peptide Complex with GHK-Cu & AHK-Cu, Lightweight Daily Scalp Care, Hydrating & Conditioning Formula"
+      },
+      {
+        "name": "Asterwood Copper Peptides",
+        "tier": 2,
+        "asin": "B0GJ5DRSL7",
+        "image": "https://m.media-amazon.com/images/I/31u2qcCm6GL.jpg",
+        "url": "https://www.amazon.com/dp/B0GJ5DRSL7?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Asterwood Copper Peptides Cream for Face, GHK-Cu with Ectoin, 1.7 Fl Oz | Strengthens Moisture Barrier, Supports Collagen & Calms Redness, Lightweight & Non-Greasy"
+      },
+      {
+        "name": "Neurogan GHK-Cu Copper",
+        "tier": 3,
+        "asin": "B0H5YQ84QS",
+        "image": "https://m.media-amazon.com/images/I/31U4e63J-pL.jpg",
+        "url": "https://www.amazon.com/dp/B0H5YQ84QS?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Neurogan GHK-Cu Copper Peptide Serum for Face - 4% 1200mg - 1oz | For Face, Neck, & Chest, Smoother-Looking Skin, With Niacinamide & Kojic Acid, Water-Based, Daily Use, Cosmetic Product"
+      },
+      {
+        "name": "GHK-Cu Copper Peptide For",
+        "tier": 3,
+        "asin": "B0GKRSL8GP",
+        "image": "https://m.media-amazon.com/images/I/41E8x0dit+L.jpg",
+        "url": "https://www.amazon.com/dp/B0GKRSL8GP?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptide For Hair & Scalp Serum – 2400mg | Water-Based Formula for Hair Softness & Shine | 4% Copper Peptides – Fast-Absorbing | Dry Scalp Moisturizer Spray"
+      },
+      {
+        "name": "Neurogan GHK-Cu Copper Peptide",
+        "tier": 4,
+        "asin": "B0CT66YVDZ",
+        "image": "https://m.media-amazon.com/images/I/31qj1kUH6gL.jpg",
+        "url": "https://www.amazon.com/dp/B0CT66YVDZ?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Neurogan GHK-Cu Copper Peptide Neck & Face Serum - 1200 mcg - 1oz | For Men & Women, GHKCu Copper Tripeptide-1, Hydrating, All Skin Types, Daily Use, Cosmetic Product, Made in USA"
+      },
+      {
+        "name": "GHK-Cu Copper Peptide Face Ser",
+        "tier": 4,
+        "asin": "B0GTQLZ34D",
+        "image": "https://m.media-amazon.com/images/I/4145YYGRwbL.jpg",
+        "url": "https://www.amazon.com/dp/B0GTQLZ34D?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptide Face Serum with Hyaluronic Acid, 1fl oz | GHK-Cu Copper Peptide Face Serum with Hyaluronic Acid hydrates skin, supports firmness, smooth texture, and radiance."
+      },
+      {
+        "name": "Copper Peptides Serum for",
+        "tier": 5,
+        "asin": "B0GV4424F8",
+        "image": "https://m.media-amazon.com/images/I/41XHtzfY-kL.jpg",
+        "url": "https://www.amazon.com/dp/B0GV4424F8?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Copper Peptides Serum for Face with Liposomal 2% GHK-Cu, Hyaluronic Acid | Multi Peptides Serum with PDRN | Advanced Korean Anti-Aging Serum | Glow Serum for Fine Lines, Firming, Elasticity- 1 Fl Oz"
+      },
+      {
+        "name": "Quicksilver Scientific",
+        "tier": 5,
+        "asin": "B0FCJWV9D7",
+        "image": "https://m.media-amazon.com/images/I/31PyCafys3L.jpg",
+        "url": "https://www.amazon.com/dp/B0FCJWV9D7?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Quicksilver Scientific Copper GHK+ Facial Serum, 1 fl oz | Copper Peptide Serum for Healthy Skin Support, Smooth Complexion and Glow, Healthy Aging Serum, GHK-Cu, Collagen Synthesis"
+      },
+      {
+        "name": "3% GHK-Cu Copper Peptide",
+        "tier": 5,
+        "asin": "B0GY3KK716",
+        "image": "https://m.media-amazon.com/images/I/410hkgsw9sL.jpg",
+        "url": "https://www.amazon.com/dp/B0GY3KK716?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "3% GHK-Cu Copper Peptide Serum for Face, 1.18 fl oz | Hyaluronic Acid, Anti-Aging, Multi-Use Booster, Wrinkle Repair, Firming"
+      },
+      {
+        "name": "Asterwood Copper Peptides Seru",
+        "tier": 5,
+        "asin": "B0CSPR98LH",
+        "image": "https://m.media-amazon.com/images/I/41lopgVYJDL.jpg",
+        "url": "https://www.amazon.com/dp/B0CSPR98LH?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Asterwood Copper Peptides Serum for Face, GHK-Cu Peptide w/Hyaluronic Acid | Topical GHK-Cu with HA, Anti-Aging, Hydrating & Collagen Boosting, Cruelty-Free, 1 Fl Oz"
+      },
+      {
+        "name": "GHK-Cu Copper Peptide Serum",
+        "tier": 5,
+        "asin": "B0GCFKQDNW",
+        "image": "https://m.media-amazon.com/images/I/310Kcp52vBL.jpg",
+        "url": "https://www.amazon.com/dp/B0GCFKQDNW?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "GHK-Cu Copper Peptide Serum for Face | With GHK-Cu Peptide, Niacinamide, Hyaluronic Acid & Panthenol to hydrate and support firmer-looking skin."
+      },
+      {
+        "name": "TOSOWOONG Copper Peptide 12",
+        "tier": 5,
+        "asin": "B0FGHLNGCW",
+        "image": "https://m.media-amazon.com/images/I/31wTRKBd3TL.jpg",
+        "url": "https://www.amazon.com/dp/B0FGHLNGCW?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "TOSOWOONG Copper Peptide 12 Cream, Anti-Aging for Fine Lines, Wrinkles | 99% Purity Copper Tripeptide-1, GHK-Cu, 12 Multi-Peptides for Fine Lines, Firming & Elasticity, Korean Skincare, 1.69 fl oz"
+      },
+      {
+        "name": "SenAllis Cosmetics Copper",
+        "tier": 5,
+        "asin": "B0H6PFW6CR",
+        "image": "https://m.media-amazon.com/images/I/31XDZeJU-9L.jpg",
+        "url": "https://www.amazon.com/dp/B0H6PFW6CR?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "SenAllis Cosmetics Copper Peptides Serum for Face with GHK-Cu Peptide and Hyaluronic Acid - Anti Aging Serum - 2 Fl Oz"
+      },
+      {
+        "name": "Dr. Brenner Copper Peptide",
+        "tier": 5,
+        "asin": "B0FNS51MSZ",
+        "image": "https://m.media-amazon.com/images/I/41g0O0zKXpL.jpg",
+        "url": "https://www.amazon.com/dp/B0FNS51MSZ?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "Dr. Brenner Copper Peptide Serum with GHK-Cu peptide, Argireline and Matrixyl 3000 Anti-Aging Moisturizer for Fine Lines and Skin Elasticity (1 oz.)"
+      },
+      {
+        "name": "APBM Copper Peptides Serum",
+        "tier": 5,
+        "asin": "B0GYN3FZ72",
+        "image": "https://m.media-amazon.com/images/I/41rfeaCIcvL.jpg",
+        "url": "https://www.amazon.com/dp/B0GYN3FZ72?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "APBM Copper Peptides Serum for Face with GHK-Cu Peptide, 3% Matrixyl 3000, Multi-Peptide & Hyaluronic Acid, Anti-Aging Facial Serum, Skin Firming Care for Fine Lines and Skin Elasticity, 1.01 Fl Oz"
+      },
+      {
+        "name": "1% GHK-Cu Liposomal Copper",
+        "tier": 5,
+        "asin": "B0H4S87HBR",
+        "image": "https://m.media-amazon.com/images/I/41i+CcHvNNL.jpg",
+        "url": "https://www.amazon.com/dp/B0H4S87HBR?tag=peptides03-20&ascsubtag=pn-tier-finds",
+        "matched_title": "1% GHK-Cu Liposomal Copper Peptides Serum for Face with NAD+ & 8D HA1 Fl.Oz | 5 Peptides 5D Ceramides - Advanced Korean Anti-Aging Plumping Blue Serum for Fine Lines and Skin Elasticity"
+      }
+    ]
+  }
+}

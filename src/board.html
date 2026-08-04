@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Peptide Tier Lists — PeptideNugget</title>
+<meta name="description" content="Community tier lists for peptides, vendors, bacteriostatic water, and cold storage gear.">
+<style>
+  :root {
+    --bg: #16181c;
+    --panel: #1e2127;
+    --panel-2: #252932;
+    --line: #333844;
+    --text: #e8eaed;
+    --muted: #9aa1ad;
+    --faint: #6f7681;
+    /* Accent is lifted straight off the S-tier swatch so the chrome sits
+       inside the tier scale instead of competing with it. */
+    --accent: #ff8080;
+    --accent-ink: #1c1214;
+    --accent-soft: #3a2226;
+    --money: #3ddc84;   /* commercial green — reserved for pricing only */
+    --tile: 92px;
+    --label-w: 168px;
+    --gap: 6px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- site header ---------- */
+  .site-head { border-bottom: 1px solid var(--line); background: rgba(22,24,28,.92); }
+  .site-head .wrap { display: flex; align-items: center; gap: 22px; padding-top: 15px; padding-bottom: 15px; }
+  .brand { display: flex; align-items: center; flex: 0 0 auto; }
+  /* lockup is ~7.5:1, so height drives a wide box — keep it modest */
+  .brand img { height: 28px; width: auto; max-width: 62vw; display: block; }
+  .topnav { display: flex; gap: 20px; flex: 1; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500; }
+  .topnav a:hover, .topnav a.active { color: var(--text); }
+  .site-head .signin { color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
+  .site-head .signin:hover { color: var(--accent); }
+
+  /* ---------- category tabs ---------- */
+  /* tabs left, share pinned top-right of the board area */
+  .board-top { display: flex; align-items: flex-start; gap: 18px; margin: 26px 0 18px; }
+  .cats { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; min-width: 0; }
+  .cat {
+    background: var(--panel); border: 1px solid var(--line); color: var(--muted);
+    padding: 7px 13px; border-radius: 999px; cursor: pointer; font-size: 13px;
+    font-weight: 500; white-space: nowrap; transition: .12s;
+  }
+  .cat:hover { color: var(--text); border-color: #4a5160; }
+  .cat[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+
+  /* ---------- board ---------- */
+  .title-bar { margin-bottom: 14px; }
+  #boardTitle {
+    font-size: 24px; font-weight: 700; letter-spacing: -.02em; padding: 4px 8px;
+    border-radius: 6px; outline: none; display: inline-block; min-width: 200px;
+  }
+  #boardTitle:focus { background: var(--panel-2); box-shadow: 0 0 0 2px var(--accent); }
+  /* Onboarding callout. People skim, so this gets a tinted pill, a looping
+     drag demo, and a slow breathing glow rather than quiet grey text. */
+  .callout {
+    display: inline-flex; align-items: center; gap: 13px;
+    margin: 9px 0 0 8px; padding: 11px 18px 11px 13px;
+    background: linear-gradient(90deg, rgba(255,128,128,.20), rgba(255,128,128,.05));
+    border: 1px solid rgba(255,128,128,.5); border-radius: 10px;
+    font-size: 14px; color: var(--text);
+    animation: calloutGlow 2.8s ease-in-out infinite;
+  }
+  .callout b { color: var(--accent); font-weight: 700; }
+  .callout .sep { color: var(--faint); margin: 0 3px; }
+  /* The money line is the whole point of the page — green, heavy, and lit
+     so it separates from the coral chrome instead of blending into it. */
+  .callout .price {
+    color: var(--money); font-weight: 800;
+    text-shadow: 0 0 16px rgba(61,220,132,.5);
+    animation: pricePulse 2.8s ease-in-out infinite;
+  }
+  @keyframes pricePulse {
+    0%, 100% { filter: brightness(1); }
+    50%      { filter: brightness(1.22); }
+  }
+  .callout .track { position: relative; width: 38px; height: 20px; flex: 0 0 38px; }
+  .callout .track i {
+    position: absolute; top: 3px; left: 0; width: 15px; height: 15px; border-radius: 3px;
+    background: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,.55);
+    animation: calloutDrag 2.1s cubic-bezier(.45,0,.25,1) infinite;
+  }
+  .callout .track::after {
+    content: ""; position: absolute; top: 3px; right: 0; width: 15px; height: 15px;
+    border-radius: 3px; border: 1px dashed rgba(255,128,128,.55);
+  }
+  @keyframes calloutDrag {
+    0%, 10%   { transform: translateX(0) scale(1); }
+    45%, 62%  { transform: translateX(23px) scale(1.1); }
+    92%, 100% { transform: translateX(0) scale(1); }
+  }
+  @keyframes calloutGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,128,128,0); }
+    50%      { box-shadow: 0 0 0 6px rgba(255,128,128,.09); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .callout, .callout .track i { animation: none; }
+  }
+
+  .board { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #0f1114; }
+  .row { display: flex; align-items: stretch; border-bottom: 1px solid var(--line); min-height: calc(var(--tile) + var(--gap) * 2); }
+  .row:last-child { border-bottom: 0; }
+
+  .row-label {
+    width: var(--label-w); flex: 0 0 var(--label-w); display: flex; align-items: center;
+    justify-content: center; padding: 8px 10px; position: relative; cursor: pointer;
+  }
+  .row-label span {
+    color: #14171a; font-weight: 700; font-size: 17px; text-align: center; outline: none;
+    width: 100%; word-break: break-word; line-height: 1.2;
+  }
+  .row-label span:focus { box-shadow: 0 0 0 2px #14171a; border-radius: 4px; }
+  .row-label input[type=color] { position: absolute; inset: 0; opacity: 0; cursor: pointer; border: 0; padding: 0; }
+
+  .row-items {
+    flex: 1; display: flex; flex-wrap: wrap; gap: var(--gap); padding: var(--gap);
+    align-content: flex-start; background: var(--panel); min-height: calc(var(--tile) + var(--gap) * 2);
+  }
+  .row-items.over { background: var(--accent-soft); }
+
+  .row-tools { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px; background: var(--panel); border-left: 1px solid var(--line); }
+  .row-tools button {
+    width: 24px; height: 22px; border: 0; border-radius: 4px; background: var(--panel-2);
+    color: var(--muted); cursor: pointer; font-size: 12px; line-height: 1;
+  }
+  .row-tools button:hover { background: #3a4150; color: var(--text); }
+
+  /* ---------- tiles ---------- */
+  .tile {
+    width: var(--tile); height: var(--tile); border-radius: 7px; overflow: hidden;
+    position: relative; cursor: grab; user-select: none; -webkit-user-select: none;
+    -webkit-user-drag: none; touch-action: none; text-decoration: none; color: var(--text);
+    background: var(--panel-2); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    transition: transform .08s, box-shadow .08s;
+  }
+  .tile:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.45); z-index: 2; }
+  .tile .accent { position: absolute; left: 0; right: 0; top: 0; height: 4px; }
+  .tile .name {
+    padding: 8px 5px 5px; font-size: 11.5px; font-weight: 600; line-height: 1.2;
+    letter-spacing: -.01em; word-break: break-word; hyphens: auto;
+  }
+  /* outbound affordance — the tile is a real link, so say so */
+  .tile .go {
+    position: absolute; top: 6px; right: 5px; font-size: 10px; line-height: 1;
+    color: rgba(232,234,237,.32); pointer-events: none;
+  }
+  .tile:hover .go { color: var(--accent); }
+  .tile.img-mode .go { color: rgba(255,255,255,.7); text-shadow: 0 1px 3px rgba(0,0,0,.9); }
+  .tile.img-mode .name {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 4px; font-size: 10px;
+    background: linear-gradient(transparent, rgba(0,0,0,.88) 45%);
+  }
+  /* pixelated: the vial art is deliberately low-res, so let it stay chunky
+     instead of being smoothed into mush by the browser's upscaler */
+  .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+  .tile.dragging { opacity: .28; }
+
+  #ghost {
+    position: fixed; z-index: 999; pointer-events: none; width: var(--tile); height: var(--tile);
+    border-radius: 7px; box-shadow: 0 12px 32px rgba(0,0,0,.65); transform: rotate(-3deg) scale(1.06);
+    opacity: .95; display: none;
+  }
+
+  /* ---------- pool ---------- */
+  .pool-head { display: flex; align-items: center; gap: 10px; margin: 18px 0 8px; }
+  .pool-head h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin: 0; font-weight: 600; }
+  .pool-head .count { font-size: 12px; color: var(--muted); background: var(--panel); padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); }
+  #pool {
+    display: flex; flex-wrap: wrap; gap: var(--gap); padding: 10px; min-height: 120px;
+    background: var(--panel); border: 1px dashed var(--line); border-radius: 10px; align-content: flex-start;
+  }
+  #pool.over { background: var(--accent-soft); border-color: var(--accent); }
+  #pool:empty::after { content: "Everything's ranked. Drag tiles back here to unrank."; color: var(--muted); font-size: 13px; padding: 8px; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    padding: 8px 14px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500;
+  }
+  .btn:hover { background: var(--panel-2); border-color: #4a5160; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .toolbar { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; align-items: stretch; }
+
+  /* ---------- share ---------- */
+  .share {
+    margin-left: auto; display: flex; align-items: stretch; gap: 10px;
+    background: rgba(61,220,132,.09); border: 1px solid rgba(61,220,132,.45);
+    border-radius: 10px; padding: 8px 10px;
+  }
+  .share-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .share-title {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--money); font-weight: 700;
+  }
+  #shareUrl {
+    width: 250px; max-width: 44vw; background: #0f1114; border: 1px solid var(--line);
+    color: var(--muted); border-radius: 6px; padding: 5px 8px; cursor: pointer;
+    font: 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; text-overflow: ellipsis;
+  }
+  #shareUrl:hover { border-color: var(--money); color: var(--text); }
+  .share-btn {
+    background: var(--money); border: 1px solid var(--money); color: #06180e;
+    font-weight: 800; font-size: 14.5px; padding: 0 22px; border-radius: 8px;
+    white-space: nowrap; cursor: pointer; letter-spacing: -.01em;
+  }
+  .share-btn:hover { filter: brightness(1.1); }
+  .share-btn.copied { background: #23a95f; border-color: #23a95f; color: #eafff2; }
+  @media (max-width: 860px) {
+    .board-top { flex-direction: column; }
+    .share { margin-left: 0; width: 100%; }
+    #shareUrl { width: 100%; max-width: none; }
+    .share-copy { flex: 1; }
+  }
+
+  /* ---------- site footer ---------- */
+  .site-foot { border-top: 1px solid var(--line); margin-top: 56px; padding: 34px 0 40px; background: #131518; }
+  .foot-grid { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 30px; }
+  .foot-brand img { height: 24px; width: auto; display: block; }
+  .foot-brand p { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 13px 0 0; max-width: 34ch; }
+  .foot-col h3 { font-size: 11.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--text); margin: 0 0 11px; font-weight: 600; }
+  .foot-col a { display: block; color: var(--muted); text-decoration: none; font-size: 13px; padding: 3.5px 0; }
+  .foot-col a:hover { color: var(--accent); }
+  .foot-legal { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .foot-legal p { color: var(--faint); font-size: 11.5px; line-height: 1.65; margin: 0 0 9px; max-width: 92ch; }
+  .foot-legal b { color: var(--muted); font-weight: 600; }
+  .foot-legal .copy { margin-top: 15px; margin-bottom: 0; }
+
+  @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px; } }
+  @media (max-width: 720px) {
+    :root { --tile: 74px; --label-w: 92px; }
+    .row-label span { font-size: 14px; }
+    .brand img { height: 21px; }
+    .topnav { display: none; }
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#"><img id="logo" alt="PeptideNugget"></a>
+    <nav class="topnav">
+      <a href="#" class="active">Tier Lists</a>
+      <a href="#">Leaderboard</a>
+      <a href="#">Vendors</a>
+      <a href="#">Guides</a>
+    </nav>
+    <a class="signin" href="#">Sign in</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="board-top">
+    <div class="cats" id="cats" role="tablist"></div>
+
+    <div class="share">
+      <div class="share-copy">
+        <span class="share-title">Share your list with friends</span>
+        <input id="shareUrl" readonly spellcheck="false" title="Click to copy">
+      </div>
+      <button class="share-btn" id="btnShare">Copy link</button>
+    </div>
+  </div>
+
+  <div class="title-bar">
+    <div id="boardTitle" contenteditable="true" spellcheck="false"></div>
+    <div class="callout">
+      <span class="track" aria-hidden="true"><i></i></span>
+      <span><b>Drag to rank.</b><span class="sep">·</span><b>Tap</b> any item to <span class="price">check current pricing</span>.</span>
+    </div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="pool-head">
+    <h2>Unranked</h2>
+    <span class="count" id="poolCount">0</span>
+  </div>
+  <div id="pool"></div>
+
+  <div class="toolbar">
+    <button class="btn" id="btnAddRow">+ Add tier</button>
+    <button class="btn" id="btnPreset">Change labels</button>
+    <button class="btn" id="btnImgMode">Tile style: Images</button>
+    <button class="btn" id="btnReset">Reset</button>
+    <button class="btn primary" id="btnExport">Export PNG</button>
+  </div>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img id="footLogo" alt="PeptideNugget">
+        <p>Community tier lists for peptides, vendors, bacteriostatic water, and cold storage gear.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Tier Lists</h3>
+        <a href="#">Peptides</a>
+        <a href="#">Bac Water &amp; Supplies</a>
+        <a href="#">Coolers &amp; Storage</a>
+      </div>
+      <div class="foot-col">
+        <h3>Community</h3>
+        <a href="#">How ranking works</a>
+        <a href="#">Submit a vendor</a>
+        <a href="#">Request a template</a>
+        <a href="#">Leaderboard</a>
+      </div>
+      <div class="foot-col">
+        <h3>Site</h3>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy policy</a>
+        <a href="#">Terms of use</a>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <p><b>Affiliate disclosure.</b> PeptideNugget earns a commission on qualifying purchases made
+         through links on this site, at no additional cost to you.</p>
+      <p><b>Research use only.</b> Compounds referenced are sold for laboratory research purposes only
+         and are not approved for human consumption. Nothing on this site is medical advice.</p>
+      <p class="copy">© 2026 PeptideNugget. Rankings reflect community votes, not clinical evidence.</p>
+    </div>
+  </div>
+</footer>
+
+<div id="ghost"></div>
+
+<script>
+"use strict";
+
+/* Logo inlined as a data URI rather than referenced from disk: a
+   file:// (or cross-origin) <img> taints the export canvas and makes
+   toDataURL() throw. Source art: ../peptide-nugget-trans.png (authored
+   alpha; icon art is the purpose-built ../favicon.png, which holds up
+   better at 16-32px than a crop of the lockup) */
+const LOGO_SRC = "__LOGO_SRC__";
+
+const ICON_SRC = "__ICON_SRC__";
+
+const logoImg = new Image();
+logoImg.src = LOGO_SRC;
+
+const VIAL_SRC = "__VIAL_SRC__";
+
+const vialImg = new Image();
+vialImg.src = VIAL_SRC;
+
+/* Affiliate routing. Amazon carries the gear categories, so those get
+   tagged Amazon links. Research peptides aren't sold on Amazon, so they
+   fall back to a plain search until real vendor links exist.
+   ascsubtag mirrors the peptides.io convention so clicks are attributable
+   per tier list in the Associates report. These are search URLs for now;
+   swapping to /dp/<ASIN> once items carry an ASIN is a one-line change. */
+const AMAZON_TAG = "peptides03-20";
+
+function amazonLink(query, subtag) {
+  return "https://www.amazon.com/s?k=" + encodeURIComponent(query)
+       + "&tag=" + AMAZON_TAG
+       + "&ascsubtag=" + encodeURIComponent(subtag);
+}
+
+/* A direct product page converts far better than a search results page,
+   so once an item carries an ASIN the link upgrades automatically. */
+function amazonProductLink(asin, subtag) {
+  return "https://www.amazon.com/dp/" + encodeURIComponent(asin)
+       + "?tag=" + AMAZON_TAG
+       + "&ascsubtag=" + encodeURIComponent(subtag);
+}
+
+function linkFor(name, categoryKey, asin) {
+  const cat = CATEGORIES[categoryKey];
+  if (!cat || cat.storefront !== "amazon") {
+    return "https://www.google.com/search?q=" + encodeURIComponent(name);
+  }
+  const subtag = "pn-tier-" + categoryKey;
+  return asin ? amazonProductLink(asin, subtag) : amazonLink(name, subtag);
+}
+
+/* Product art is downloaded and inlined as a data URI by build.js, so the
+   export canvas is never tainted by a cross-origin image and the page works
+   offline. No proxy service to run. */
+function productImage(item) {
+  return item.image || null;
+}
+
+/* Catalog is injected from data/catalog.json at build time — that file is
+   the single place content is edited. See build.js. */
+const CATEGORIES = __CATALOG__;
+
+const PRESETS = {
+  grade:  [["S","#ff7f7f"],["A","#ffbf7f"],["B","#ffdf7f"],["C","#ffff7f"],["D","#bfff7f"],["F","#7fffff"]],
+  vendor: [["Would Reorder","#ff7f7f"],["Solid","#ffbf7f"],["Fine","#ffdf7f"],["Mid","#ffff7f"],
+           ["Sketchy","#bfff7f"],["Avoid","#7fffff"]],
+  effect: [["Life Changing","#ff7f7f"],["Clearly Works","#ffbf7f"],["Subtle","#ffdf7f"],
+           ["Placebo?","#ffff7f"],["Nothing","#bfff7f"],["Made It Worse","#7fffff"]]
+};
+const PRESET_ORDER = ["grade","vendor","effect"];
+
+/* ------------------------------------------------------------------ */
+
+let uid = 0;
+const nextId = () => "i" + (++uid);
+
+const state = {
+  category: "compounds",
+  presetIdx: 0,
+  imgMode: true,
+  title: "",
+  rows: [],
+  pool: []
+};
+
+const $ = (s) => document.querySelector(s);
+const board = $("#board"), pool = $("#pool"), ghost = $("#ghost");
+
+/* One hash drives both the text-tile accent bar and the vial's hue
+   rotation, so a compound keeps the same color in either tile style. */
+function hueFor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 360;
+  return h;
+}
+function accentFor(name) { return `hsl(${hueFor(name)} 62% 55%)`; }
+
+function loadCategory(key) {
+  const cat = CATEGORIES[key];
+  state.category = key;
+  state.title = cat.title;
+  state.presetIdx = PRESET_ORDER.indexOf(cat.preset);
+  state.rows = PRESETS[cat.preset].map(([label, color]) => ({ id: nextId(), label, color, items: [] }));
+  state.pool = [];
+
+  cat.items.forEach((row) => {
+    const { name, tier, asin, image } = row;
+    const item = { id: nextId(), name, asin, image, url: row.url || linkFor(name, key, asin) };
+    if (tier >= 0 && tier < state.rows.length) state.rows[tier].items.push(item);
+    else state.pool.push(item);
+  });
+
+  $("#boardTitle").textContent = state.title;
+  render();
+}
+
+/* ---------------------------- rendering --------------------------- */
+
+function tileEl(item) {
+  // A real anchor, so middle-click and cmd-click behave as users expect
+  // and the destination shows in the status bar. rel is set for paid links.
+  const el = document.createElement("a");
+  el.className = "tile" + (state.imgMode ? " img-mode" : "");
+  el.dataset.id = item.id;
+  el.href = item.url;
+  el.target = "_blank";
+  el.rel = "sponsored nofollow noopener noreferrer";
+  el.draggable = false;
+  el.title = item.name + " — check current pricing";
+
+  if (state.imgMode) {
+    const img = document.createElement("img");
+    const product = productImage(item);
+    if (CATEGORIES[state.category].vials) {
+      // One generated vial, hue-rotated per compound. The art is red
+      // liquid on neutral grey, so rotating the hue walks the whole
+      // spectrum while the glass and cap stay grey — 26 distinct tiles
+      // out of a single image instead of 26 generations.
+      img.src = VIAL_SRC;
+      img.style.filter = `hue-rotate(${hueFor(item.name)}deg) saturate(1.15)`;
+    } else if (product) {
+      // Real Amazon product shot, proxied same-origin so export survives.
+      img.crossOrigin = "anonymous";
+      img.src = product;
+      img.style.imageRendering = "auto";
+      img.onerror = () => { img.src = placeholderArt(item.name); img.crossOrigin = null; };
+    } else {
+      img.src = placeholderArt(item.name);   // a vial makes no sense for a cooler
+    }
+    img.alt = "";
+    img.draggable = false;
+    el.appendChild(img);
+  } else {
+    const accent = document.createElement("div");
+    accent.className = "accent";
+    accent.style.background = accentFor(item.name);
+    el.appendChild(accent);
+  }
+
+  const name = document.createElement("div");
+  name.className = "name";
+  name.textContent = item.name;
+  el.appendChild(name);
+
+  const go = document.createElement("span");
+  go.className = "go";
+  go.textContent = "↗";
+  el.appendChild(go);
+
+  return el;
+}
+
+/* Tiny generated SVG swatch — only exists so image mode is previewable. */
+function placeholderArt(name) {
+  const c = accentFor(name);
+  const initials = name.replace(/[^A-Za-z0-9 ]/g, "").split(/\s+/).slice(0, 2)
+                       .map((w) => w[0] || "").join("").toUpperCase();
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+    <rect width="120" height="120" fill="${c}"/>
+    <text x="60" y="72" font-family="sans-serif" font-size="42" font-weight="700"
+          fill="rgba(0,0,0,.55)" text-anchor="middle">${initials}</text></svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+function render() {
+  board.innerHTML = "";
+
+  state.rows.forEach((row, idx) => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "row";
+
+    // --- label box (editable text + color picker) ---
+    const label = document.createElement("div");
+    label.className = "row-label";
+    label.style.background = row.color;
+
+    const span = document.createElement("span");
+    span.contentEditable = "true";
+    span.spellcheck = false;
+    span.textContent = row.label;
+    span.addEventListener("blur", () => { row.label = span.textContent.trim() || "—"; });
+    span.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); span.blur(); } });
+    span.addEventListener("pointerdown", (e) => e.stopPropagation());
+
+    const color = document.createElement("input");
+    color.type = "color";
+    color.value = rgbToHex(row.color);
+    color.addEventListener("input", () => { row.color = color.value; label.style.background = color.value; });
+
+    label.append(color, span);
+
+    // --- drop zone ---
+    const items = document.createElement("div");
+    items.className = "row-items";
+    items.dataset.rowId = row.id;
+    row.items.forEach((it) => items.appendChild(tileEl(it)));
+
+    // --- per-row tools ---
+    const tools = document.createElement("div");
+    tools.className = "row-tools";
+    tools.append(
+      toolBtn("↑", "Move up", () => moveRow(idx, -1)),
+      toolBtn("↓", "Move down", () => moveRow(idx, 1)),
+      toolBtn("✕", "Delete tier", () => deleteRow(idx))
+    );
+
+    rowEl.append(label, items, tools);
+    board.appendChild(rowEl);
+  });
+
+  pool.innerHTML = "";
+  state.pool.forEach((it) => pool.appendChild(tileEl(it)));
+  $("#poolCount").textContent = state.pool.length;
+
+  updateShareLink();   // the link always reflects what's on screen
+}
+
+function toolBtn(text, title, fn) {
+  const b = document.createElement("button");
+  b.textContent = text;
+  b.title = title;
+  b.addEventListener("click", fn);
+  b.addEventListener("pointerdown", (e) => e.stopPropagation());
+  return b;
+}
+
+function rgbToHex(c) {
+  if (c.startsWith("#")) return c;
+  const m = c.match(/\d+/g);
+  return m ? "#" + m.slice(0, 3).map((n) => (+n).toString(16).padStart(2, "0")).join("") : "#888888";
+}
+
+/* ------------------------- drag and drop -------------------------- */
+/* Pointer events rather than HTML5 DnD: same code path handles mouse
+   and touch, and this audience is overwhelmingly on phones. */
+
+let drag = null;
+let suppressClick = false;
+
+document.addEventListener("pointerdown", (e) => {
+  const tile = e.target.closest(".tile");
+  if (!tile || e.button > 0) return;
+  // Deliberately no preventDefault() here — it would swallow the click
+  // that follows, and a plain tap has to reach the affiliate link.
+  suppressClick = false;
+
+  drag = {
+    id: tile.dataset.id,
+    el: tile,
+    startX: e.clientX,
+    startY: e.clientY,
+    active: false,
+    pointerId: e.pointerId
+  };
+});
+
+document.addEventListener("pointermove", (e) => {
+  if (!drag || e.pointerId !== drag.pointerId) return;
+
+  // Small threshold so a tap/click doesn't read as a drag.
+  if (!drag.active) {
+    if (Math.hypot(e.clientX - drag.startX, e.clientY - drag.startY) < 5) return;
+    drag.active = true;
+    drag.el.classList.add("dragging");
+    ghost.innerHTML = "";
+    const clone = drag.el.cloneNode(true);
+    clone.classList.remove("dragging");
+    clone.style.width = "100%";
+    clone.style.height = "100%";
+    ghost.appendChild(clone);
+    ghost.style.display = "block";
+  }
+  e.preventDefault();
+
+  ghost.style.left = e.clientX - ghost.offsetWidth / 2 + "px";
+  ghost.style.top = e.clientY - ghost.offsetHeight / 2 + "px";
+
+  const zone = zoneAt(e.clientX, e.clientY);
+  document.querySelectorAll(".row-items.over, #pool.over").forEach((z) => z.classList.remove("over"));
+  if (zone) zone.classList.add("over");
+});
+
+document.addEventListener("pointerup", (e) => {
+  if (!drag) return;
+
+  if (drag.active) {
+    const zone = zoneAt(e.clientX, e.clientY);
+    if (zone) drop(drag.id, zone, e.clientX, e.clientY);
+    ghost.style.display = "none";
+    document.querySelectorAll(".row-items.over, #pool.over").forEach((z) => z.classList.remove("over"));
+    drag.el.classList.remove("dragging");
+    suppressClick = true;   // a drag just ended — don't also open the link
+  }
+  drag = null;
+});
+
+/* Capture phase so the anchor's default navigation is cancelled before
+   it runs. A clean tap falls through untouched and opens the link. */
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".tile")) return;
+  if (suppressClick) { e.preventDefault(); e.stopPropagation(); }
+  suppressClick = false;
+}, true);
+
+function zoneAt(x, y) {
+  ghost.style.display = "none";
+  const el = document.elementFromPoint(x, y);
+  if (drag && drag.active) ghost.style.display = "block";
+  return el ? el.closest(".row-items, #pool") : null;
+}
+
+/* Pull an item out of whichever list currently holds it. */
+function takeItem(id) {
+  let i = state.pool.findIndex((it) => it.id === id);
+  if (i > -1) return state.pool.splice(i, 1)[0];
+  for (const row of state.rows) {
+    i = row.items.findIndex((it) => it.id === id);
+    if (i > -1) return row.items.splice(i, 1)[0];
+  }
+  return null;
+}
+
+function drop(id, zone, x, y) {
+  const item = takeItem(id);
+  if (!item) return;
+
+  const target = zone.id === "pool"
+    ? state.pool
+    : (state.rows.find((r) => r.id === zone.dataset.rowId) || {}).items;
+  if (!target) return;
+
+  target.splice(insertIndex(zone, x, y, id), 0, item);
+  render();
+}
+
+/* Insert before the first tile whose center sits past the pointer,
+   scanning in reading order so wrapped rows behave sensibly. */
+function insertIndex(zone, x, y, draggedId) {
+  const tiles = [...zone.querySelectorAll(".tile")].filter((t) => t.dataset.id !== draggedId);
+  for (let i = 0; i < tiles.length; i++) {
+    const r = tiles[i].getBoundingClientRect();
+    if (y < r.bottom && x < r.left + r.width / 2) return i;
+  }
+  return tiles.length;
+}
+
+/* ---------------------------- row ops ----------------------------- */
+
+function moveRow(idx, dir) {
+  const to = idx + dir;
+  if (to < 0 || to >= state.rows.length) return;
+  [state.rows[idx], state.rows[to]] = [state.rows[to], state.rows[idx]];
+  render();
+}
+
+function deleteRow(idx) {
+  state.pool.push(...state.rows[idx].items);
+  state.rows.splice(idx, 1);
+  render();
+}
+
+/* ------------------------------ share ----------------------------- */
+/* The whole board rides in the URL hash, so a shared link restores the
+   exact list. Items are referenced by their index in the template rather
+   than by name, which keeps the URL short and survives us adding fields
+   to items later. Hash rather than query string: it never hits the
+   server, so these never show up in access logs or get truncated by
+   analytics. */
+
+const SHARE_BASE = location.protocol === "file:"
+  ? "https://peptidenugget.com/"                 // demo-friendly; real host in prod
+  : location.origin + location.pathname;
+
+function b64urlEncode(str) {
+  const bytes = new TextEncoder().encode(str);   // names carry µ and α
+  let bin = "";
+  bytes.forEach((b) => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function b64urlDecode(s) {
+  const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/"));
+  return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
+}
+
+function encodeBoard() {
+  const cat = CATEGORIES[state.category];
+  const idx = new Map(cat.items.map((it, i) => [it.name, i]));
+  const p = {
+    v: 1,
+    c: state.category,
+    r: state.rows.map((row) => row.items.map((it) => idx.get(it.name)).filter((n) => n != null)),
+    // the unranked tray is arranged too — without this the tray comes back
+    // in template order and the shared board isn't what was shared
+    u: state.pool.map((it) => idx.get(it.name)).filter((n) => n != null),
+  };
+  // Only carry chrome the user actually changed, so default links stay short.
+  const def = PRESETS[PRESET_ORDER[state.presetIdx]] || [];
+  if (state.rows.some((r, i) => !def[i] || def[i][0] !== r.label)) p.l = state.rows.map((r) => r.label);
+  if (state.rows.some((r, i) => !def[i] || def[i][1] !== String(r.color).toLowerCase())) {
+    p.k = state.rows.map((r) => r.color);
+  }
+  const title = $("#boardTitle").textContent.trim();
+  if (title && title !== cat.title) p.t = title;
+  return b64urlEncode(JSON.stringify(p));
+}
+
+function applyBoard(code) {
+  let p;
+  try { p = JSON.parse(b64urlDecode(code)); } catch (e) { return false; }
+  if (!p || !CATEGORIES[p.c] || CATEGORIES[p.c].hidden) return false;
+
+  loadCategory(p.c);
+  syncTabs(p.c);
+
+  if (Array.isArray(p.r)) {
+    const all = [...state.rows.flatMap((r) => r.items), ...state.pool];
+    const byName = new Map(all.map((it) => [it.name, it]));
+    const byIdx = new Map();
+    CATEGORIES[p.c].items.forEach((it, i) => {
+      if (byName.has(it.name)) byIdx.set(i, byName.get(it.name));
+    });
+
+    state.rows.forEach((r) => { r.items = []; });
+    const used = new Set();
+    p.r.forEach((list, ri) => {
+      if (!state.rows[ri] || !Array.isArray(list)) return;
+      list.forEach((i) => {
+        const it = byIdx.get(i);
+        if (it && !used.has(it.id)) { state.rows[ri].items.push(it); used.add(it.id); }
+      });
+    });
+    const ordered = [];
+    if (Array.isArray(p.u)) {
+      p.u.forEach((i) => {
+        const it = byIdx.get(i);
+        if (it && !used.has(it.id)) { ordered.push(it); used.add(it.id); }
+      });
+    }
+    // anything the link didn't place stays unranked rather than vanishing
+    state.pool = ordered.concat([...byIdx.values()].filter((it) => !used.has(it.id)));
+  }
+
+  if (Array.isArray(p.l)) p.l.forEach((l, i) => { if (state.rows[i]) state.rows[i].label = l; });
+  if (Array.isArray(p.k)) p.k.forEach((k, i) => { if (state.rows[i]) state.rows[i].color = k; });
+  if (p.t) $("#boardTitle").textContent = p.t;
+
+  render();
+  return true;
+}
+
+function updateShareLink() {
+  const el = $("#shareUrl");
+  if (el) el.value = SHARE_BASE + "#s=" + encodeBoard();
+}
+
+async function copyShare() {
+  const el = $("#shareUrl");
+  let ok = true;
+  try {
+    await navigator.clipboard.writeText(el.value);
+  } catch (e) {
+    // navigator.clipboard needs a secure context; fall back to selection
+    el.select();
+    el.setSelectionRange(0, 99999);
+    ok = document.execCommand("copy");
+  }
+  const b = $("#btnShare");
+  b.textContent = ok ? "Copied!" : "Press ⌘C";
+  b.classList.toggle("copied", ok);
+  setTimeout(() => { b.textContent = "Copy link"; b.classList.remove("copied"); }, 1700);
+}
+
+/* ----------------------------- export ----------------------------- */
+/* Drawn by hand on a canvas rather than screenshotting the DOM — no
+   dependency, and full control over the exported composition. */
+
+function exportPNG() {
+  const S = 2;                              // retina scale
+  const TILE = 92, GAP = 6, LABEL_W = 168;
+  const width = 1100;
+  const itemsW = width - LABEL_W;
+  const perRow = Math.max(1, Math.floor((itemsW - GAP) / (TILE + GAP)));
+  const TITLE_H = 64, FOOT_H = 58;
+
+  const heights = state.rows.map((r) => {
+    const lines = Math.max(1, Math.ceil(r.items.length / perRow));
+    return lines * TILE + (lines + 1) * GAP;
+  });
+  const height = TITLE_H + heights.reduce((a, b) => a + b, 0) + FOOT_H;
+
+  const cv = document.createElement("canvas");
+  cv.width = width * S;
+  cv.height = height * S;
+  const g = cv.getContext("2d");
+  g.scale(S, S);
+  g.textBaseline = "middle";
+
+  g.fillStyle = "#0f1114";
+  g.fillRect(0, 0, width, height);
+
+  // title
+  g.fillStyle = "#e8eaed";
+  g.font = "700 26px -apple-system, Segoe UI, Inter, sans-serif";
+  g.textAlign = "left";
+  g.fillText($("#boardTitle").textContent.trim(), 18, TITLE_H / 2 + 2);
+
+  let y = TITLE_H;
+  state.rows.forEach((row, ri) => {
+    const h = heights[ri];
+
+    g.fillStyle = row.color;
+    g.fillRect(0, y, LABEL_W, h);
+    g.fillStyle = "#1e2127";
+    g.fillRect(LABEL_W, y, width - LABEL_W, h);
+
+    // tier label, wrapped and shrunk to fit its box
+    g.fillStyle = "#14171a";
+    g.textAlign = "center";
+    drawFitText(g, row.label, LABEL_W / 2, y + h / 2, LABEL_W - 20, h - 12, 19, 700);
+
+    row.items.forEach((it, i) => {
+      const cx = LABEL_W + GAP + (i % perRow) * (TILE + GAP);
+      const cy = y + GAP + Math.floor(i / perRow) * (TILE + GAP);
+      roundRect(g, cx, cy, TILE, TILE, 7);
+      g.fillStyle = "#252932";
+      g.fill();
+
+      const useVial = state.imgMode && CATEGORIES[state.category].vials
+                      && vialImg.complete && vialImg.naturalWidth;
+
+      if (useVial) {
+        g.save();
+        g.clip();
+        g.imageSmoothingEnabled = false;                       // keep it chunky
+        g.filter = `hue-rotate(${hueFor(it.name)}deg) saturate(1.15)`;
+        g.drawImage(vialImg, cx, cy, TILE, TILE);
+        g.filter = "none";
+        g.fillStyle = "rgba(0,0,0,.74)";                        // name plate
+        g.fillRect(cx, cy + TILE - 25, TILE, 25);
+        g.restore();
+        g.fillStyle = "#e8eaed";
+        g.textAlign = "center";
+        drawFitText(g, it.name, cx + TILE / 2, cy + TILE - 12.5, TILE - 8, 21, 10.5, 600);
+      } else {
+        g.fillStyle = accentFor(it.name);
+        g.save(); g.clip(); g.fillRect(cx, cy, TILE, 4); g.restore();
+        g.fillStyle = "#e8eaed";
+        g.textAlign = "center";
+        drawFitText(g, it.name, cx + TILE / 2, cy + TILE / 2 + 2, TILE - 10, TILE - 16, 12.5, 600);
+      }
+    });
+
+    g.strokeStyle = "#333844";
+    g.lineWidth = 1;
+    g.beginPath(); g.moveTo(0, y + h + .5); g.lineTo(width, y + h + .5); g.stroke();
+    y += h;
+  });
+
+  // footer: logo lockup on the left, typeable URL on the right, so a
+  // screenshot reposted anywhere still carries attribution
+  const fy = y + FOOT_H / 2;
+  if (logoImg.complete && logoImg.naturalWidth) {
+    const lh = 26, lw = lh * (logoImg.naturalWidth / logoImg.naturalHeight);
+    g.drawImage(logoImg, 18, fy - lh / 2, lw, lh);
+  } else {
+    g.textAlign = "left";
+    g.fillStyle = "#ff8080";
+    g.font = "700 19px -apple-system, Segoe UI, Inter, sans-serif";
+    g.fillText("peptidenugget", 18, fy);
+  }
+  g.textAlign = "right";
+  g.fillStyle = "#9aa1ad";
+  g.font = "600 13px -apple-system, Segoe UI, Inter, sans-serif";
+  g.fillText("peptidenugget.com", width - 18, fy);
+
+  let data;
+  try {
+    data = cv.toDataURL("image/png");
+  } catch (err) {
+    // Reached only if a cross-origin product image tainted the canvas.
+    // Fail loudly: a silent broken export would cost us the share loop.
+    console.error(err);
+    alert("Export failed: an image loaded cross-origin, which blocks canvas export. "
+        + "All art should be inlined by build.js — re-run `npm run build`.");
+    return;
+  }
+
+  const a = document.createElement("a");
+  a.download = slug($("#boardTitle").textContent) + ".png";
+  a.href = data;
+  a.click();
+}
+
+/* Word-wrap into maxW, shrinking the font until the block fits maxH. */
+function drawFitText(g, text, cx, cy, maxW, maxH, startSize, weight) {
+  let size = startSize, lines = [];
+  for (; size >= 8; size -= 0.5) {
+    g.font = `${weight} ${size}px -apple-system, Segoe UI, Inter, sans-serif`;
+    lines = wrapText(g, text, maxW);
+    if (lines.length * (size * 1.18) <= maxH) break;
+  }
+  const lh = size * 1.18;
+  const top = cy - ((lines.length - 1) * lh) / 2;
+  lines.forEach((ln, i) => g.fillText(ln, cx, top + i * lh));
+}
+
+function wrapText(g, text, maxW) {
+  const words = text.split(/\s+/), lines = [];
+  let line = "";
+  for (const w of words) {
+    const test = line ? line + " " + w : w;
+    if (g.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+    else line = test;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function roundRect(g, x, y, w, h, r) {
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+
+const slug = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "tier-list";
+
+/* ------------------------------ wiring ---------------------------- */
+
+$("#logo").src = LOGO_SRC;
+$("#footLogo").src = LOGO_SRC;
+
+const favicon = document.createElement("link");
+favicon.rel = "icon";
+favicon.href = ICON_SRC;   // square art; the 7.5:1 lockup is mush at 32px
+document.head.appendChild(favicon);
+
+const catsEl = $("#cats");
+const catButtons = {};
+Object.entries(CATEGORIES).filter(([, cat]) => !cat.hidden).forEach(([key, cat]) => {
+  const b = document.createElement("button");
+  b.className = "cat";
+  b.role = "tab";
+  b.textContent = cat.label;
+  b.addEventListener("click", () => { loadCategory(key); syncTabs(key); });
+  catButtons[key] = b;
+  catsEl.appendChild(b);
+});
+
+function syncTabs(key) {
+  Object.entries(catButtons).forEach(([k, b]) => b.setAttribute("aria-selected", k === key));
+}
+
+$("#btnAddRow").addEventListener("click", () => {
+  state.rows.push({ id: nextId(), label: "New", color: "#9aa1ad", items: [] });
+  render();
+});
+
+$("#btnReset").addEventListener("click", () => loadCategory(state.category));
+
+$("#btnPreset").addEventListener("click", () => {
+  state.presetIdx = (state.presetIdx + 1) % PRESET_ORDER.length;
+  const preset = PRESETS[PRESET_ORDER[state.presetIdx]];
+  // Keep whatever is already ranked; just relabel/recolor in place.
+  preset.forEach(([label, color], i) => {
+    if (state.rows[i]) { state.rows[i].label = label; state.rows[i].color = color; }
+  });
+  render();
+});
+
+$("#btnImgMode").addEventListener("click", (e) => {
+  state.imgMode = !state.imgMode;
+  e.target.textContent = "Tile style: " + (state.imgMode ? "Images" : "Text");
+  render();
+});
+
+$("#btnExport").addEventListener("click", exportPNG);
+$("#btnShare").addEventListener("click", copyShare);
+$("#shareUrl").addEventListener("click", copyShare);
+
+// A shared link wins over the default board; fall back if it's malformed.
+const shared = location.hash.match(/[#&]s=([A-Za-z0-9_-]+)/);
+if (!(shared && applyBoard(shared[1]))) {
+  loadCategory("compounds");
+  syncTabs("compounds");
+}
+</script>
+</body>
+</html>
