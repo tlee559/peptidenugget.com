@@ -47,7 +47,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <nav className="topnav">
               <Link href="/">Tier Lists</Link>
-              <Link href="/how-ranking-works">How Ranking Works</Link>
             </nav>
           </div>
         </header>

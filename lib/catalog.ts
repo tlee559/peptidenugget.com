@@ -9,6 +9,7 @@ export type Item = {
   url?: string;
   search?: string;
   match?: string[];
+  price?: number;
 };
 
 export type Category = {
@@ -39,6 +40,7 @@ export const SLUGS: Record<string, string> = {
   peptides: "compounds",
   supplies: "bacwater",
   "amazon-finds": "finds",
+  sprays: "sprays",
   vendors: "vendors",
   "cold-storage": "cold",
 };
