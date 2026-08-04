@@ -312,12 +312,28 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
           });
           let nextPool = cur.pool.filter((t) => { if (t.id === d.id) { moved = t; return false; } return true; });
           if (moved) {
-            if (target === "pool") nextPool = [...nextPool.slice(0, at), moved, ...nextPool.slice(at)];
-            else {
+            let placed = false;
+            if (target === "pool") {
+              nextPool = [...nextPool.slice(0, at), moved, ...nextPool.slice(at)];
+              placed = true;
+            } else {
               const ri = nextRows.findIndex((r) => r.id === target);
-              if (ri >= 0) nextRows[ri] = { ...nextRows[ri], items: [...nextRows[ri].items.slice(0, at), moved, ...nextRows[ri].items.slice(at)] };
+              if (ri >= 0) {
+                nextRows[ri] = { ...nextRows[ri], items: [...nextRows[ri].items.slice(0, at), moved, ...nextRows[ri].items.slice(at)] };
+                placed = true;
+              }
             }
-            setRows(nextRows); setPool(nextPool);
+            /* The tile was spliced out of its old home above. If we could not
+               place it, committing now would delete it outright — which is
+               exactly how tiles were vanishing. Conserve or abort. */
+            const before = cur.rows.reduce((n, r) => n + r.items.length, 0) + cur.pool.length;
+            const after = nextRows.reduce((n, r) => n + r.items.length, 0) + nextPool.length;
+            if (placed && after === before) {
+              setRows(nextRows);
+              setPool(nextPool);
+            } else if (process.env.NODE_ENV !== "production") {
+              console.warn("drop aborted: would have lost a tile", { target, placed, before, after });
+            }
           }
         }
         ghost.style.display = "none";
@@ -422,9 +438,12 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     if (target === "pool") nextPool = [...nextPool, moved];
     else {
       const ri = nextRows.findIndex((r) => r.id === target);
-      if (ri < 0) return;
+      if (ri < 0) return;   // abort before committing; never drop the tile
       nextRows[ri] = { ...nextRows[ri], items: [...nextRows[ri].items, moved] };
     }
+    const before = cur.rows.reduce((n, r) => n + r.items.length, 0) + cur.pool.length;
+    const after = nextRows.reduce((n, r) => n + r.items.length, 0) + nextPool.length;
+    if (after !== before) return;
     setRows(nextRows);
     setPool(nextPool);
   }, []);
@@ -602,7 +621,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
           <span className={styles.track} aria-hidden="true"><i /></span>
           <span>
             <b>Drag to rank.</b><span className={styles.sep}>·</span>
-            <b>Tap</b> any item to <span className={styles.price}>check current pricing</span>.
+            <span className={styles.price}>Tap any item to check current pricing.</span>
           </span>
         </div>
       </div>

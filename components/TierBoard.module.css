@@ -65,10 +65,13 @@
 .sep { color: var(--faint); margin: 0 3px; }
 /* The money line is the point of the page — green, heavy and lit so it
    separates from the coral chrome instead of blending into it. */
+/* The money line: the entire call to action, not just two words. Green,
+   heavy, lit, and gently breathing so it pulls the eye without shouting. */
 .price {
   color: var(--money); font-weight: 800;
-  text-shadow: 0 0 16px rgba(61,220,132,.5);
-  animation: pricePulse 2.8s ease-in-out infinite;
+  text-shadow: 0 0 16px rgba(61,220,132,.45);
+  animation: pricePulse 2.4s ease-in-out infinite;
+  white-space: normal;
 }
 .track { position: relative; width: 38px; height: 20px; flex: 0 0 38px; }
 .track i {
@@ -90,8 +93,8 @@
   50% { box-shadow: 0 0 0 6px rgba(255,128,128,.09); }
 }
 @keyframes pricePulse {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.22); }
+  0%, 100% { filter: brightness(1); text-shadow: 0 0 12px rgba(61,220,132,.35); }
+  50%      { filter: brightness(1.28); text-shadow: 0 0 22px rgba(61,220,132,.75); }
 }
 @media (prefers-reduced-motion: reduce) {
   .callout, .track i, .price { animation: none; }
