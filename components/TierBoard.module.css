@@ -323,3 +323,40 @@
 @media (max-width: 640px) {
   .grip { width: 34px; height: 34px; font-size: 14px; color: rgba(255,255,255,.7); }
 }
+
+/* ---------- tier picker ----------
+   Two taps to rank, instead of dragging a tile past six rows of auto-scroll. */
+.pickerBack {
+  position: fixed; inset: 0; background: rgba(8,9,11,.72); z-index: 1100;
+  display: flex; align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(2px);
+}
+.picker {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 16px 16px 0 0; width: 100%; max-width: 520px;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  box-shadow: 0 -12px 40px rgba(0,0,0,.6);
+}
+.pickerHead { margin: 0 0 12px; font-size: 14px; color: var(--muted); text-align: center; }
+.pickerHead b { color: var(--text); }
+.pickerRows { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pickerTier {
+  border: 0; border-radius: 10px; padding: 15px 8px; cursor: pointer;
+  font-weight: 800; font-size: 15px; color: #14171a; line-height: 1.2;
+  min-height: 52px;              /* comfortable touch target */
+}
+.pickerTier:active { transform: scale(.97); }
+.pickerPool {
+  width: 100%; margin-top: 8px; padding: 13px; border-radius: 10px; cursor: pointer;
+  background: var(--panel-2); border: 1px solid var(--line); color: var(--text);
+  font-size: 14px; font-weight: 600;
+}
+.pickerCancel {
+  width: 100%; margin-top: 6px; padding: 11px; border: 0; background: none;
+  color: var(--muted); font-size: 13.5px; cursor: pointer;
+}
+@media (min-width: 560px) {
+  .pickerBack { align-items: center; }
+  .picker { border-radius: 16px; }
+  .pickerRows { grid-template-columns: repeat(6, 1fr); }
+}

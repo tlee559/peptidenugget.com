@@ -102,6 +102,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
   const [shareUrl, setShareUrl] = useState("");
   const [copied, setCopied] = useState(false);
 
+  const [picker, setPicker] = useState<string | null>(null);
   const [captureFor, setCaptureFor] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [capErr, setCapErr] = useState("");
@@ -220,6 +221,23 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
        once a drag is armed; React's own handlers are passive by default. */
     const blockScroll = (e: TouchEvent) => { if (drag.current?.armed) e.preventDefault(); };
 
+    /* The unranked tray sits below six tier rows, so a drag out of it has its
+       target off-screen — and user scrolling is suppressed mid-drag. Without
+       this the tile can never reach a tier and always snaps back. */
+    const EDGE = 100, MAX_SPEED = 18;
+    let scrollRAF = 0;
+    const stopAutoScroll = () => { cancelAnimationFrame(scrollRAF); scrollRAF = 0; };
+    const autoScroll = (clientY: number) => {
+      const vh = window.innerHeight;
+      let dy = 0;
+      if (clientY < EDGE) dy = -MAX_SPEED * (1 - clientY / EDGE);
+      else if (clientY > vh - EDGE) dy = MAX_SPEED * (1 - (vh - clientY) / EDGE);
+      stopAutoScroll();
+      if (!dy) return;
+      const step = () => { window.scrollBy(0, dy); scrollRAF = requestAnimationFrame(step); };
+      scrollRAF = requestAnimationFrame(step);
+    };
+
     const onDown = (e: PointerEvent) => {
       const tile = (e.target as HTMLElement).closest("[data-tile]") as HTMLElement | null;
       if (!tile || e.button > 0) return;
@@ -266,12 +284,14 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       ghost.style.top = e.clientY - ghost.offsetHeight / 2 + "px";
       document.querySelectorAll("." + styles.over).forEach((z) => z.classList.remove(styles.over));
       zoneAt(e.clientX, e.clientY)?.classList.add(styles.over);
+      autoScroll(e.clientY);
     };
 
     const onUp = (e: PointerEvent) => {
       const d = drag.current;
       if (!d) return;
       disarm();
+      stopAutoScroll();
       if (d.active) {
         const zone = zoneAt(e.clientX, e.clientY);
         if (zone) {
@@ -313,8 +333,11 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     const onClick = (e: MouseEvent) => {
       const tile = (e.target as HTMLElement).closest("[data-tile]") as HTMLAnchorElement | null;
       if (!tile) return;
+      const onGrip = !!(e.target as HTMLElement).closest("[data-grip]");
       if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; return; }
       suppressClick.current = false;
+      // A tap on the grip is "move me", never "open the link".
+      if (onGrip) { e.preventDefault(); e.stopPropagation(); setPicker(tile.dataset.tile!); return; }
       // Email capture only on Amazon links. The peptide list goes straight
       // through — an interstitial on a partner referral link is friction on
       // the highest-intent click we have.
@@ -344,6 +367,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     document.addEventListener("pointerup", onUp);
     document.addEventListener("click", onClick, true);
     return () => {
+      stopAutoScroll();
       document.removeEventListener("contextmenu", onContext);
       document.removeEventListener("touchmove", blockScroll);
       document.removeEventListener("pointerdown", onDown);
@@ -379,6 +403,31 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     } catch {}
     handOff();
   };
+
+  /* Dragging a tile from the tray to a tier means auto-scrolling past six
+     rows while holding at the screen edge — technically works, miserable on a
+     phone. Tapping the grip opens a tier picker instead: two taps, no scroll,
+     no gesture conflict. Drag still works for anyone who prefers it. */
+  const moveTile = useCallback((id: string, target: string) => {
+    const cur = stateRef.current;
+    let moved: Tile | undefined;
+    const nextRows = cur.rows.map((r) => {
+      const i = r.items.findIndex((t) => t.id === id);
+      if (i < 0) return r;
+      moved = r.items[i];
+      return { ...r, items: r.items.filter((t) => t.id !== id) };
+    });
+    let nextPool = cur.pool.filter((t) => { if (t.id === id) { moved = t; return false; } return true; });
+    if (!moved) return;
+    if (target === "pool") nextPool = [...nextPool, moved];
+    else {
+      const ri = nextRows.findIndex((r) => r.id === target);
+      if (ri < 0) return;
+      nextRows[ri] = { ...nextRows[ri], items: [...nextRows[ri].items, moved] };
+    }
+    setRows(nextRows);
+    setPool(nextPool);
+  }, []);
 
   /* ----------------------------- export ------------------------------ */
   const exportPNG = async () => {
@@ -631,6 +680,39 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       </div>
 
       <div className={styles.ghost} ref={ghostRef} />
+
+      {picker && (() => {
+        const all = [...rows.flatMap((r) => r.items), ...pool];
+        const item = all.find((t) => t.id === picker);
+        return (
+          <div className={styles.pickerBack} onClick={() => setPicker(null)}>
+            <div className={styles.picker} onClick={(e) => e.stopPropagation()}>
+              <p className={styles.pickerHead}>
+                Move <b>{item?.name}</b> to
+              </p>
+              <div className={styles.pickerRows}>
+                {rows.map((r) => (
+                  <button
+                    key={r.id}
+                    className={styles.pickerTier}
+                    style={{ background: r.color }}
+                    onClick={() => { moveTile(picker, r.id); setPicker(null); }}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+              <button
+                className={styles.pickerPool}
+                onClick={() => { moveTile(picker, "pool"); setPicker(null); }}
+              >
+                Unranked
+              </button>
+              <button className={styles.pickerCancel} onClick={() => setPicker(null)}>Cancel</button>
+            </div>
+          </div>
+        );
+      })()}
 
       {captureFor && (
         <div className={styles.modalBack} onClick={(e) => { if (e.target === e.currentTarget) skip(); }}>
