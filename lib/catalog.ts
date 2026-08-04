@@ -38,6 +38,7 @@ export const PRESET_ORDER: PresetKey[] = ["grade", "vendor"];
 
 /** URL slug <-> catalog key. Slugs are the public contract; keys are internal. */
 export const SLUGS: Record<string, string> = {
+  "top-tier": "toptier",
   peptides: "compounds",
   "amazon-finds": "finds",
   sprays: "sprays",
