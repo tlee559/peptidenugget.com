@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   CATALOG, PRESETS, PRESET_ORDER, KEY_TO_SLUG, visibleCategories,
-  vialArt, hueFor, accentFor, linkFor, isAffiliate, type Item, type PresetKey,
+  vialArt, hueFor, accentFor, linkFor, type Item, type PresetKey,
 } from "@/lib/catalog";
 import styles from "./TierBoard.module.css";
 
@@ -263,7 +263,10 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       if (!tile) return;
       if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; return; }
       suppressClick.current = false;
-      if (!isAffiliate(stateRef.current.key)) return;
+      // Email capture only on Amazon links. The peptide list goes straight
+      // through — an interstitial on a partner referral link is friction on
+      // the highest-intent click we have.
+      if (CATALOG[stateRef.current.key].storefront !== "amazon") return;
 
       let ask = true;
       try {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { visibleCategories, KEY_TO_SLUG } from "@/lib/catalog";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://peptidenugget.com"),
@@ -18,11 +19,10 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+/* Derived from the catalogue, not hardcoded — a hidden category used to leave
+   a dead footer link pointing at a 404. */
 const FOOT = {
-  "Tier Lists": [
-    ["Peptides", "/tier/peptides"],
-    ["Amazon Finds", "/tier/amazon-finds"],
-  ],
+  "Tier Lists": visibleCategories().map(([key, c]) => [c.label, "/tier/" + KEY_TO_SLUG[key]]),
   Community: [
     ["How ranking works", "/how-ranking-works"],
     ["Submit a product", "/submit"],
