@@ -12,24 +12,32 @@ import { trackAffiliateClick } from "@/lib/fbq";
 type Tile = Item & { id: string; url: string };
 type Row = { id: string; label: string; color: string; items: Tile[] };
 
+// Runtime-only id counter (used by the "Add tier" button). IDs that render on
+// the SERVER must be deterministic: a mutable counter accumulates across the
+// static build, so a tier page's server-rendered data-tile IDs differ from the
+// client's fresh sequence — a hydration mismatch that leaves drag/drop matching
+// DOM ids against React state that no longer share them. That's why drag worked
+// on "/" (its build-order ids happened to match the client) but broke on every
+// /tier/* route. Rows and tiles below derive stable ids from the category key +
+// index, so server and client always agree.
 let uid = 0;
-const nextId = () => "i" + ++uid;
+const nextId = () => "runtime-" + ++uid;
 
 /* ------------------------------- helpers ------------------------------- */
 
-function buildRows(preset: PresetKey): Row[] {
-  return PRESETS[preset].map(([label, color]) => ({ id: nextId(), label, color, items: [] }));
+function buildRows(key: string, preset: PresetKey): Row[] {
+  return PRESETS[preset].map(([label, color], i) => ({ id: `${key}-r${i}`, label, color, items: [] }));
 }
 
 function loadCategory(key: string): { rows: Row[]; pool: Tile[]; title: string; presetIdx: number } {
   const cat = CATALOG[key];
-  const rows = buildRows(cat.preset);
+  const rows = buildRows(key, cat.preset);
   const pool: Tile[] = [];
-  for (const raw of cat.items) {
-    const tile: Tile = { ...raw, id: nextId(), url: linkFor(raw, key) };
+  cat.items.forEach((raw, i) => {
+    const tile: Tile = { ...raw, id: `${key}-t${i}`, url: linkFor(raw, key) };
     if (raw.tier >= 0 && raw.tier < rows.length) rows[raw.tier].items.push(tile);
     else pool.push(tile);
-  }
+  });
   return { rows, pool, title: cat.title, presetIdx: PRESET_ORDER.indexOf(cat.preset) };
 }
 
