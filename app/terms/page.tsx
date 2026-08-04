@@ -38,7 +38,7 @@ export default function Terms() {
 
         <h2>Accuracy</h2>
         <p>
-          We work to keep product links and guides correct and we fix errors when
+          We work to keep product links and rankings correct and we fix errors when
           told about them, but the site is provided &ldquo;as is&rdquo; with no warranty.
           Product listings in particular can change underneath us.
         </p>

@@ -20,7 +20,7 @@ export default function Submit() {
 
         <h2>What to include</h2>
         <ul>
-          <li><b>Which list</b> it belongs on — Peptides, Supplies &amp; Storage, or Amazon Finds.</li>
+          <li><b>Which list</b> it belongs on — Peptides or Amazon Finds.</li>
           <li><b>A link</b> to the exact product. An Amazon link is ideal; the ASIN is what we actually key on.</li>
           <li><b>One line on why</b> it deserves a spot.</li>
         </ul>

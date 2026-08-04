@@ -59,7 +59,7 @@
         "tier": 2
       },
       {
-        "name": "Thymosin α-1",
+        "name": "Thymosin \u03b1-1",
         "tier": 2
       },
       {
@@ -234,7 +234,7 @@
         "url": "https://www.amazon.com/dp/B0GL6JCVQZ?tag=peptides03-20&ascsubtag=pn-tier-bacwater"
       },
       {
-        "name": "0.22µm Filter",
+        "name": "0.22\u00b5m Filter",
         "tier": 3,
         "search": "0.22 micron syringe filter",
         "match": [
@@ -311,7 +311,8 @@
         "image": "/img/products/B0GVQS8CYL.jpg",
         "url": "https://www.amazon.com/dp/B0GVQS8CYL?tag=peptides03-20&ascsubtag=pn-tier-bacwater"
       }
-    ]
+    ],
+    "hidden": true
   },
   "cold": {
     "label": "Peptide Cold Storage",

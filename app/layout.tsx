@@ -21,13 +21,11 @@ export const metadata: Metadata = {
 const FOOT = {
   "Tier Lists": [
     ["Peptides", "/tier/peptides"],
-    ["Supplies & Storage", "/tier/supplies"],
     ["Amazon Finds", "/tier/amazon-finds"],
   ],
   Community: [
     ["How ranking works", "/how-ranking-works"],
     ["Submit a product", "/submit"],
-    ["Guides", "/guides"],
   ],
   Site: [
     ["About", "/about"],
@@ -49,7 +47,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </Link>
             <nav className="topnav">
               <Link href="/">Tier Lists</Link>
-              <Link href="/guides">Guides</Link>
               <Link href="/how-ranking-works">How Ranking Works</Link>
             </nav>
           </div>

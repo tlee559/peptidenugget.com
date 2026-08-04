@@ -24,7 +24,7 @@ export default function HowRanking() {
         <ul>
           <li><b>Peptides</b> — ordered loosely by how well studied and how widely discussed a compound is. Not by how well it works.</li>
           <li><b>Amazon Finds</b> — seeded from Amazon&rsquo;s own popularity ranking for the search behind that list.</li>
-          <li><b>Supplies &amp; Storage</b> — a first pass by us, and the one most worth rearranging.</li>
+          
         </ul>
 
         <div className="box warn">

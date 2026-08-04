@@ -1,7 +1,9 @@
 {
   "_comment": "Site-wide build settings. Change a value, run `npm run build`.",
-
   "vialArt": "photo",
-  "_vialArt_options": ["photo", "illustration"],
+  "_vialArt_options": [
+    "photo",
+    "illustration"
+  ],
   "_vialArt_note": "Art used for peptide tiles. 'photo' = crushed photoreal vial (assets/vial-photo.png); 'illustration' = chunky pixel-art vial (assets/vial-illustration.png). Both are hue-rotated per compound, so either style stays colour-coded."
 }
