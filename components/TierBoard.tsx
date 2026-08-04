@@ -580,7 +580,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
             <img className={styles.mark} src="/img/logo.png" alt="PeptideNugget" />
             <h2>Want the <em>best prices</em> first?</h2>
             <p>
-              We track price drops on peptide gear and send a short weekly roundup.
+              We track price drops across the catalogue and send a short weekly roundup.
               Drop your email, or skip straight through — your link opens either way.
             </p>
             <p className={styles.err}>{capErr}</p>

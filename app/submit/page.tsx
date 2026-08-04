@@ -27,7 +27,7 @@ export default function Submit() {
 
         <h2>What gets accepted</h2>
         <ul>
-          <li>Gear and supplies that are genuinely purchasable. If we can&rsquo;t link it accurately, we won&rsquo;t list it.</li>
+          <li>Products that are genuinely purchasable. If we can&rsquo;t link it accurately, we won&rsquo;t list it.</li>
           <li>Well-known research compounds for the peptide list.</li>
         </ul>
 

@@ -38,11 +38,8 @@ export const PRESET_ORDER: PresetKey[] = ["grade", "vendor"];
 /** URL slug <-> catalog key. Slugs are the public contract; keys are internal. */
 export const SLUGS: Record<string, string> = {
   peptides: "compounds",
-  supplies: "bacwater",
   "amazon-finds": "finds",
   sprays: "sprays",
-  vendors: "vendors",
-  "cold-storage": "cold",
 };
 export const KEY_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(SLUGS).map(([slug, key]) => [key, slug])

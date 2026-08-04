@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s — PeptideNugget",
   },
   description:
-    "Community tier lists for peptides, injection supplies, and copper peptide finds. Rank them yourself and share the link.",
+    "Community tier lists for research peptides. Rank them yourself and share the link.",
   openGraph: {
     siteName: "PeptideNugget",
     type: "website",
@@ -60,8 +60,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/img/logo.png" alt="PeptideNugget" />
                 <p>
-                  Community tier lists for peptides, injection supplies, and copper
-                  peptide finds.
+                  Community tier lists for research peptides. Rank them, share the
+                  link.
                 </p>
               </div>
               {Object.entries(FOOT).map(([heading, links]) => (

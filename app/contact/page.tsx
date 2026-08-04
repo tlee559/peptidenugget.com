@@ -27,7 +27,7 @@ export default function Contact() {
         <h2>Things we can&rsquo;t help with</h2>
         <ul>
           <li>Where to buy research peptides. We don&rsquo;t answer sourcing questions.</li>
-          <li>Dosing, stacking, or whether something is safe for you. Ask a doctor.</li>
+          <li>Protocols, measurements, or medical questions. We don&rsquo;t answer those — speak to a doctor.</li>
         </ul>
       </article>
     </main>
