@@ -204,6 +204,14 @@
 @media (max-width: 720px) {
   .rowLabel span { font-size: 14px; }
 }
+/* Narrower tier label + no tools column = 3 products per row instead of 2. */
+@media (max-width: 640px) {
+  .board { --label-w: 62px; --tile: 84px; }
+  .rowLabel { width: 62px; flex: 0 0 62px; padding: 6px 4px; }
+  .rowLabel span { font-size: 15px; }
+  .tile { width: 84px; height: 84px; }
+  .pool .tile { width: 84px; height: 84px; }
+}
 
 /* FTC disclosure. Sits with the links, not in the footer — "clearly and
    conspicuously", not relegated to fine print. */
@@ -222,4 +230,35 @@
   margin-right: 4px;
   font-size: 11.5px;
   letter-spacing: .03em;
+}
+
+/* ---------- mobile ----------
+   At 390px the share box and callout were overflowing the viewport and
+   clipping "Copy link" and "check current pricing" mid-word — the two
+   things we most need a phone user to read. */
+@media (max-width: 640px) {
+  /* callout must wrap, not run off the edge */
+  .callout {
+    display: flex;
+    margin-left: 0;
+    max-width: 100%;
+    font-size: 13.5px;
+    padding: 10px 12px;
+    align-items: flex-start;
+  }
+  .track { display: none; }          /* the animation costs width we need */
+
+  /* Share is a post-ranking action; on a phone it was eating the fold before
+     a single product was visible. Collapse to just the button. */
+  .share { padding: 7px 9px; align-items: center; gap: 8px; }
+  .shareUrl { display: none; }
+  .shareTitle { font-size: 10px; }
+  .shareBtn { padding: 9px 14px; font-size: 13.5px; }
+
+  .boardTitle { font-size: 20px; padding-left: 0; }
+  .titleBar { margin-bottom: 10px; }
+
+  /* Row tools are fiddly on touch anyway; dropping them buys ~36px, which
+     is a whole extra product per row. */
+  .rowTools { display: none; }
 }
