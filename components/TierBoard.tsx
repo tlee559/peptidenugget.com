@@ -176,7 +176,8 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
   /* ------------------------- drag and drop --------------------------- */
   /* Pointer events, not HTML5 DnD: one code path for mouse and touch, and
      this audience is overwhelmingly on phones. */
-  const drag = useRef<{ id: string; el: HTMLElement; x: number; y: number; active: boolean; pid: number } | null>(null);
+  const drag = useRef<{ id: string; el: HTMLElement; x: number; y: number; active: boolean;
+                       pid: number; touch: boolean; armed: boolean } | null>(null);
   const suppressClick = useRef(false);
 
   useEffect(() => {
@@ -189,18 +190,61 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       return el ? (el.closest("[data-zone]") as HTMLElement | null) : null;
     };
 
+    /* Touch needs a different gesture contract from mouse.
+       With touch-action:none the board was a scroll dead zone, and a 5px
+       threshold is below finger jitter — so taps became drags and links never
+       opened. Touch now press-and-holds to arm a drag, which leaves plain
+       swipes free to scroll the page and taps free to follow the link.
+       Mouse keeps the immediate 5px threshold. */
+    const HOLD_MS = 220;
+    const SCROLL_TOL = 14;   // finger wander that still counts as a scroll
+    let holdTimer: number | undefined;
+
+    const arm = () => {
+      const d = drag.current;
+      if (!d || d.armed) return;
+      d.armed = true;
+      d.el.classList.add(styles.armed);
+      try { navigator.vibrate?.(12); } catch { /* not supported */ }
+      // Scrolling is already suppressed by the non-passive touchmove handler.
+      // Deliberately NOT toggling body overflow: on iOS that can snap the
+      // scroll position to the top mid-drag.
+    };
+
+    const disarm = () => {
+      clearTimeout(holdTimer);
+      drag.current?.el.classList.remove(styles.armed);
+    };
+
+    /* Registered non-passive so preventDefault actually suppresses scrolling
+       once a drag is armed; React's own handlers are passive by default. */
+    const blockScroll = (e: TouchEvent) => { if (drag.current?.armed) e.preventDefault(); };
+
     const onDown = (e: PointerEvent) => {
       const tile = (e.target as HTMLElement).closest("[data-tile]") as HTMLElement | null;
       if (!tile || e.button > 0) return;
       suppressClick.current = false;
-      drag.current = { id: tile.dataset.tile!, el: tile, x: e.clientX, y: e.clientY, active: false, pid: e.pointerId };
+      const touch = e.pointerType !== "mouse";
+      drag.current = {
+        id: tile.dataset.tile!, el: tile, x: e.clientX, y: e.clientY,
+        active: false, pid: e.pointerId, touch, armed: !touch,
+      };
+      if (touch) holdTimer = window.setTimeout(arm, HOLD_MS);
     };
 
     const onMove = (e: PointerEvent) => {
       const d = drag.current;
       if (!d || e.pointerId !== d.pid) return;
+      const dist = Math.hypot(e.clientX - d.x, e.clientY - d.y);
+
+      // Moved before the hold completed => they're scrolling, not dragging.
+      if (!d.armed) {
+        if (dist > SCROLL_TOL) { disarm(); drag.current = null; }
+        return;
+      }
+
       if (!d.active) {
-        if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 5) return;   // tap, not drag
+        if (dist < (d.touch ? 2 : 5)) return;
         d.active = true;
         d.el.classList.add(styles.dragging);
         ghost.innerHTML = "";
@@ -220,6 +264,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     const onUp = (e: PointerEvent) => {
       const d = drag.current;
       if (!d) return;
+      disarm();
       if (d.active) {
         const zone = zoneAt(e.clientX, e.clientY);
         if (zone) {
@@ -280,11 +325,13 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
       setCapErr(""); setEmail(""); setCaptureFor(tile.href);
     };
 
+    document.addEventListener("touchmove", blockScroll, { passive: false });
     document.addEventListener("pointerdown", onDown);
     document.addEventListener("pointermove", onMove);
     document.addEventListener("pointerup", onUp);
     document.addEventListener("click", onClick, true);
     return () => {
+      document.removeEventListener("touchmove", blockScroll);
       document.removeEventListener("pointerdown", onDown);
       document.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerup", onUp);

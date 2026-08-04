@@ -113,7 +113,7 @@
 .tile {
   width: var(--tile); height: var(--tile); border-radius: 7px; overflow: hidden;
   position: relative; cursor: grab; user-select: none; -webkit-user-select: none;
-  -webkit-user-drag: none; touch-action: none; text-decoration: none; color: var(--text);
+  -webkit-user-drag: none; touch-action: pan-y; text-decoration: none; color: var(--text);
   background: var(--panel-2); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center; text-align: center;
   transition: transform .08s, box-shadow .08s; flex: 0 0 auto;
@@ -284,4 +284,17 @@
   }
   .cats::-webkit-scrollbar { display: none; }
   .cat { flex: 0 0 auto; }
+}
+
+/* Armed = the press-and-hold registered and a drag is about to begin. The
+   visual + haptic tell the user the gesture took, so they don't keep stabbing
+   at the tile wondering why nothing moved. */
+.tile.armed {
+  transform: scale(1.12);
+  box-shadow: 0 8px 22px rgba(0,0,0,.6), 0 0 0 2px var(--accent);
+  z-index: 4;
+}
+/* Bigger touch targets: tiles are also the tap-to-shop control. */
+@media (max-width: 640px) {
+  .tile { border-radius: 9px; }
 }
