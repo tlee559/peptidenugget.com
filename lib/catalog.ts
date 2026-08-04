@@ -20,6 +20,7 @@ export type Category = {
   affiliateUrl?: string;
   vials?: boolean;
   hidden?: boolean;
+  research?: boolean;   // renders its tab in black, matching the storefront
   discover?: { search: string; match?: string[]; limit?: number };
   items: Item[];
 };
@@ -40,6 +41,13 @@ export const SLUGS: Record<string, string> = {
   peptides: "compounds",
   "amazon-finds": "finds",
   sprays: "sprays",
+  "tissue-repair": "tissue",
+  dermal: "dermal",
+  metabolic: "metabolic",
+  secretagogue: "secretagogue",
+  cellular: "cellular",
+  neuro: "neuro",
+  circadian: "circadian",
 };
 export const KEY_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(SLUGS).map(([slug, key]) => [key, slug])

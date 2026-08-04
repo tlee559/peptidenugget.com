@@ -262,3 +262,26 @@
      is a whole extra product per row. */
   .rowTools { display: none; }
 }
+
+/* Research categories mirror the storefront's own filter pills: black when
+   selected, so the tab bar reads the same way it does on Amino Club. */
+.cat.research[aria-selected="true"] {
+  background: #101114;
+  border-color: #101114;
+  color: #ffffff;
+}
+.cat.research:hover { border-color: #6a7180; }
+
+/* Nine tabs wrap into a wall on a phone; scroll them instead, like the
+   storefront does. */
+@media (max-width: 860px) {
+  .cats {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat { flex: 0 0 auto; }
+}

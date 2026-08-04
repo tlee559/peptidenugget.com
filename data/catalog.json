@@ -420,5 +420,376 @@
         "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
       }
     ]
+  },
+  "tissue": {
+    "label": "Tissue Repair",
+    "title": "Tissue Repair Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "GHK-Cu",
+        "tier": 0,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "BPC-157",
+        "tier": 0,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "KPV",
+        "tier": 1,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GLOW",
+        "tier": 1,
+        "price": 89.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "TB-500",
+        "tier": 2,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "ARA-290",
+        "tier": 2,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "BPC-157/TB-500 (Wolverine)",
+        "tier": 3,
+        "price": 79.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GHK-Cu Spray",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "dermal": {
+    "label": "Dermal",
+    "title": "Dermal Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "GHK-Cu",
+        "tier": 0,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "KPV",
+        "tier": 0,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "KLOW",
+        "tier": 1,
+        "price": 99.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Melanotan II",
+        "tier": 1,
+        "price": 29.95,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GLOW",
+        "tier": 2,
+        "price": 89.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Melanotan I",
+        "tier": 2,
+        "price": 29.95,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SNAP-8",
+        "tier": 3,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GHK-Cu Spray",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "metabolic": {
+    "label": "Metabolic",
+    "title": "Metabolic Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "GLP-3 (RT)",
+        "tier": 0,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GLP-2 (TR)",
+        "tier": 0,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GLP-1 (SM)",
+        "tier": 1,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Tesamorlin",
+        "tier": 1,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "MOTS-C",
+        "tier": 2,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "5-Amino-1MQ",
+        "tier": 2,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Cagrilintide",
+        "tier": 3,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "AOD-9604",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "secretagogue": {
+    "label": "Secretagogue",
+    "title": "Secretagogue Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "Tesamorlin",
+        "tier": 0,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "CJC-1295 / Ipamorelin",
+        "tier": 1,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "IGF-1 LR3",
+        "tier": 2,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Ipamorelin",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Sermorelin",
+        "tier": 4,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Kisspeptin",
+        "tier": 5,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "cellular": {
+    "label": "Cellular",
+    "title": "Cellular Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "GHK-Cu",
+        "tier": 0,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "MOTS-C",
+        "tier": 0,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "NAD+",
+        "tier": 1,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Glutathione",
+        "tier": 1,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Epithalon",
+        "tier": 2,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Thymosin Alpha-1",
+        "tier": 2,
+        "price": 39.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "GHK-Cu Spray",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "NAD+ Spray",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "neuro": {
+    "label": "Neuro",
+    "title": "Neuro Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "NAD+",
+        "tier": 0,
+        "price": 69.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SEMAX",
+        "tier": 0,
+        "price": 29.95,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SELANK",
+        "tier": 1,
+        "price": 29.95,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "NAD+ Spray",
+        "tier": 1,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SEMAX Spray",
+        "tier": 2,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "Dihexa",
+        "tier": 2,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "VIP",
+        "tier": 3,
+        "price": 49.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SELANK Spray",
+        "tier": 3,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
+  },
+  "circadian": {
+    "label": "Circadian",
+    "title": "Circadian Research Tier List",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "research": true,
+    "items": [
+      {
+        "name": "SELANK",
+        "tier": 0,
+        "price": 29.95,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "DSIP",
+        "tier": 1,
+        "price": 29.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      },
+      {
+        "name": "SELANK Spray",
+        "tier": 2,
+        "price": 59.99,
+        "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
+      }
+    ]
   }
 }

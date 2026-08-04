@@ -450,7 +450,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
               key={k}
               role="tab"
               aria-selected={k === key}
-              className={styles.cat}
+              className={`${styles.cat} ${c.research ? styles.research : ""}`}
               onClick={() => switchTo(k)}
             >
               {c.label}
