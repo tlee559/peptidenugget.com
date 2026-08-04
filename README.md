@@ -90,6 +90,35 @@ Board state encodes into the URL hash (`#s=…`): tier assignments, tray order,
 and any custom labels, colors, or title. Hash rather than query string, so it
 never reaches the server. Malformed links fall back to the default board.
 
+## Email capture
+
+Clicking an Amazon-backed tile shows one modal: subscribe or skip. **The
+product link opens either way** — the offer is why they clicked. The signup is
+fire-and-forget (`sendBeacon`), so a subscribe outage can never delay or block
+the affiliate hand-off.
+
+`api/subscribe.js` writes to Supabase first (our list, our copy) and to a
+Mailgun mailing list second. Mailgun failing never fails the request.
+
+Run `supabase/migrations/0001_subscribers.sql` once. It enables RLS with no
+policies on purpose: the anon key ships in the browser, so without it the
+subscriber list would be world-readable.
+
+Needed in the Vercel env:
+
+| Var | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | project URL |
+| `SUPABASE_SECRET_KEY` | server-only, bypasses RLS |
+| `MAILGUN_API_KEY` | private API key |
+| `MAILGUN_LIST` | list address, e.g. `deals@mg.peptidenugget.com` |
+| `MAILGUN_REGION` | `eu` for EU accounts, otherwise omit |
+
+## Vial art
+
+`data/site.json` -> `"vialArt": "photo" | "illustration"`, then `npm run build`.
+Both are red-liquid-on-grey, so hue-rotation colour-codes either style.
+
 ## Environment
 
 Copy `.env.example` to `.env.local`. Never commit real values — `.gitignore`

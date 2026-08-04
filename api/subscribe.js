@@ -2,18 +2,20 @@
  * POST /api/subscribe   { email, source, category, product }
  *
  * Two sinks, deliberately independent:
- *   1. Supabase `subscribers` — our own copy, always written first so the
- *      list is ours and survives changing ESP.
- *   2. Mailchimp — only if MAILCHIMP_API_KEY + MAILCHIMP_AUDIENCE_ID are set.
+ *   1. Supabase `subscribers` — our own copy, written first so the list is
+ *      ours and survives changing ESP.
+ *   2. Mailgun mailing list — only if MAILGUN_API_KEY + MAILGUN_LIST are set.
  *
- * Mailchimp failing never fails the request: the caller is mid-affiliate-
- * click and is about to be sent to Amazon. Losing a newsletter signup is
- * cheap; blocking the commission is not.
+ * Mailgun failing never fails the request: the caller is mid-affiliate-click
+ * and about to be handed to Amazon. Losing a newsletter signup is cheap;
+ * blocking the commission is not.
  *
- * Env (set in Vercel project settings):
- *   NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SECRET_KEY  (server-only, bypasses RLS)
- *   MAILCHIMP_API_KEY   — ends in "-usX"; that suffix is the datacentre
- *   MAILCHIMP_AUDIENCE_ID
+ * Env (Vercel project settings):
+ *   NEXT_PUBLIC_SUPABASE_URL
+ *   SUPABASE_SECRET_KEY        server-only, bypasses RLS
+ *   MAILGUN_API_KEY            private API key (starts "key-" or a raw token)
+ *   MAILGUN_LIST               list address, e.g. deals@mg.peptidenugget.com
+ *   MAILGUN_REGION             "eu" for EU accounts; anything else = US
  */
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
 
@@ -37,28 +39,29 @@ async function toSupabase(row) {
   return { ok: true };
 }
 
-async function toMailchimp(email, tags) {
-  const key = process.env.MAILCHIMP_API_KEY;
-  const audience = process.env.MAILCHIMP_AUDIENCE_ID;
-  if (!key || !audience) return { ok: false, skipped: "mailchimp not configured" };
+async function toMailgun(email, vars) {
+  const key = process.env.MAILGUN_API_KEY;
+  const list = process.env.MAILGUN_LIST;
+  if (!key || !list) return { ok: false, skipped: "mailgun not configured" };
 
-  // Mailchimp keys are "<secret>-us21"; the suffix picks the API host.
-  const dc = key.split("-").pop();
-  const r = await fetch(`https://${dc}.api.mailchimp.com/3.0/lists/${audience}/members`, {
+  const host = process.env.MAILGUN_REGION === "eu" ? "api.eu.mailgun.net" : "api.mailgun.net";
+  const body = new URLSearchParams({
+    address: email,
+    subscribed: "yes",
+    upsert: "yes",                       // idempotent: re-signup just updates
+    vars: JSON.stringify(vars),
+  });
+
+  const r = await fetch(`https://${host}/v3/lists/${encodeURIComponent(list)}/members`, {
     method: "POST",
     headers: {
-      authorization: "Basic " + Buffer.from("anystring:" + key).toString("base64"),
-      "content-type": "application/json",
+      authorization: "Basic " + Buffer.from("api:" + key).toString("base64"),
+      "content-type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({ email_address: email, status: "subscribed", tags }),
+    body,
   });
   if (r.ok) return { ok: true };
-  const body = await r.text();
-  // 400 "Member Exists" is a success from our point of view.
-  if (r.status === 400 && /already a list member|Member Exists/i.test(body)) {
-    return { ok: true, note: "already subscribed" };
-  }
-  return { ok: false, error: `mailchimp ${r.status}: ${body.slice(0, 160)}` };
+  return { ok: false, error: `mailgun ${r.status}: ${(await r.text()).slice(0, 160)}` };
 }
 
 module.exports = async (req, res) => {
@@ -68,9 +71,7 @@ module.exports = async (req, res) => {
   }
 
   let payload = req.body;
-  if (typeof payload === "string") {
-    try { payload = JSON.parse(payload); } catch { payload = null; }
-  }
+  if (typeof payload === "string") { try { payload = JSON.parse(payload); } catch { payload = null; } }
   // sendBeacon posts a Blob; some runtimes hand it over unparsed.
   if (!payload && req.body) { try { payload = JSON.parse(String(req.body)); } catch {} }
 
@@ -81,19 +82,19 @@ module.exports = async (req, res) => {
   const category = String(payload?.category || "").slice(0, 40);
   const product = String(payload?.product || "").slice(0, 500);
 
-  const [supa, mc] = await Promise.allSettled([
+  const [supa, mg] = await Promise.allSettled([
     toSupabase({ email, source, category, product, created_at: new Date().toISOString() }),
-    toMailchimp(email, [source, category].filter(Boolean)),
+    toMailgun(email, { source, category }),
   ]);
 
   const detail = {
     supabase: supa.status === "fulfilled" ? supa.value : { ok: false, error: String(supa.reason) },
-    mailchimp: mc.status === "fulfilled" ? mc.value : { ok: false, error: String(mc.reason) },
+    mailgun: mg.status === "fulfilled" ? mg.value : { ok: false, error: String(mg.reason) },
   };
-  if (!detail.supabase.ok) console.error("subscribe/supabase", detail.supabase);
-  if (!detail.mailchimp.ok && !detail.mailchimp.skipped) console.error("subscribe/mailchimp", detail.mailchimp);
+  if (!detail.supabase.ok && !detail.supabase.skipped) console.error("subscribe/supabase", detail.supabase);
+  if (!detail.mailgun.ok && !detail.mailgun.skipped) console.error("subscribe/mailgun", detail.mailgun);
 
-  // 200 unless BOTH sinks failed — the visitor is being sent to Amazon either way.
-  const anyStored = detail.supabase.ok || detail.mailchimp.ok;
-  return res.status(anyStored ? 200 : 502).json({ ok: anyStored, detail });
+  // 200 unless BOTH sinks failed — the visitor is Amazon-bound either way.
+  const stored = detail.supabase.ok || detail.mailgun.ok;
+  return res.status(stored ? 200 : 502).json({ ok: stored, detail });
 };
