@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}} — PeptideNugget</title>
+<meta name="description" content="{{DESC}}">
+<style>
+  :root {
+    --bg:#16181c; --panel:#1e2127; --panel-2:#252932; --line:#333844;
+    --text:#e8eaed; --muted:#9aa1ad; --faint:#6f7681;
+    --accent:#ff8080; --accent-ink:#1c1214; --money:#3ddc84;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; background:var(--bg); color:var(--text);
+    font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1180px; margin:0 auto; padding:0 16px; }
+  a { color:var(--accent); }
+
+  .site-head { border-bottom:1px solid var(--line); background:rgba(22,24,28,.92); }
+  .site-head .wrap { display:flex; align-items:center; gap:22px; padding:15px 16px; }
+  .brand { display:flex; align-items:center; flex:0 0 auto; }
+  .brand img { height:28px; width:auto; max-width:62vw; display:block; }
+  .topnav { display:flex; gap:20px; flex:1; }
+  .topnav a { color:var(--muted); text-decoration:none; font-size:13.5px; font-weight:500; }
+  .topnav a:hover, .topnav a.active { color:var(--text); }
+
+  main.wrap { padding-top:34px; padding-bottom:20px; }
+  .doc { max-width:760px; }
+  .doc.wide { max-width:1000px; }
+  h1 { font-size:32px; line-height:1.2; letter-spacing:-.025em; margin:0 0 10px; }
+  .lede { font-size:17px; color:var(--muted); margin:0 0 30px; line-height:1.6; }
+  h2 { font-size:21px; letter-spacing:-.02em; margin:34px 0 12px; }
+  h3 { font-size:16px; margin:22px 0 8px; }
+  p, li { color:#cbd0d8; }
+  ul,ol { padding-left:22px; }
+  li { margin:6px 0; }
+  code { background:var(--panel-2); padding:2px 6px; border-radius:4px; font-size:.9em; }
+  table { border-collapse:collapse; width:100%; margin:16px 0; font-size:14px; }
+  th,td { border:1px solid var(--line); padding:9px 11px; text-align:left; }
+  th { background:var(--panel-2); font-weight:600; }
+  .callout-box { background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--accent); border-radius:8px; padding:15px 18px; margin:22px 0; }
+  .callout-box.warn { border-left-color:#ffbf7f; }
+  .callout-box.good { border-left-color:var(--money); }
+  .callout-box h3 { margin-top:0; }
+  .callout-box p:last-child { margin-bottom:0; }
+
+  .site-foot { border-top:1px solid var(--line); margin-top:56px; padding:34px 0 40px; background:#131518; }
+  .foot-grid { display:grid; grid-template-columns:1.7fr 1fr 1fr 1fr; gap:30px; }
+  .foot-brand img { height:24px; width:auto; display:block; }
+  .foot-brand p { color:var(--muted); font-size:13px; line-height:1.6; margin:13px 0 0; max-width:34ch; }
+  .foot-col h3 { font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--text); margin:0 0 11px; font-weight:600; }
+  .foot-col a { display:block; color:var(--muted); text-decoration:none; font-size:13px; padding:3.5px 0; }
+  .foot-col a:hover { color:var(--accent); }
+  .foot-legal { margin-top:30px; padding-top:20px; border-top:1px solid var(--line); }
+  .foot-legal p { color:var(--faint); font-size:11.5px; line-height:1.65; margin:0 0 9px; max-width:92ch; }
+  .foot-legal b { color:var(--muted); font-weight:600; }
+  @media (max-width:900px){ .foot-grid{grid-template-columns:1fr 1fr;gap:26px;} }
+  @media (max-width:720px){ .topnav{display:none;} .brand img{height:21px;} .foot-grid{grid-template-columns:1fr;} h1{font-size:26px;} }
+{{EXTRA_CSS}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><img id="logo" alt="PeptideNugget"></a>
+    <nav class="topnav">
+      <a href="/" class="active">Tier Lists</a>
+      <a href="/guides.html">Guides</a>
+      <a href="/how-ranking-works.html">How Ranking Works</a>
+      <a href="/leaderboard.html">Leaderboard</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+{{CONTENT}}
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img id="footLogo" alt="PeptideNugget">
+        <p>Community tier lists for peptides, vendors, bacteriostatic water, and cold storage gear.</p>
+      </div>
+      <div class="foot-col">
+        <h3>Tier Lists</h3>
+        <a href="/#c=compounds">Peptides</a>
+        <a href="/#c=bacwater">Supplies &amp; Storage</a>
+        <a href="/#c=finds">Amazon Finds</a>
+      </div>
+      <div class="foot-col">
+        <h3>Community</h3>
+        <a href="/how-ranking-works.html">How ranking works</a>
+        <a href="/leaderboard.html">Leaderboard</a>
+        <a href="/submit.html">Submit a product</a>
+        <a href="/guides.html">Guides</a>
+      </div>
+      <div class="foot-col">
+        <h3>Site</h3>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <p><b>Affiliate disclosure.</b> PeptideNugget earns a commission on qualifying purchases made
+         through links on this site, at no additional cost to you.</p>
+      <p><b>Research use only.</b> Compounds referenced are sold for laboratory research purposes only
+         and are not approved for human consumption. Nothing on this site is medical advice.</p>
+      <p class="copy">© 2026 PeptideNugget. Rankings reflect community votes, not clinical evidence.</p>
+    </div>
+  </div>
+</footer>
+<script>
+document.getElementById("logo").src = "__LOGO_SRC__";
+document.getElementById("footLogo").src = "__LOGO_SRC__";
+var f=document.createElement("link"); f.rel="icon"; f.href="__ICON_SRC__"; document.head.appendChild(f);
+</script>
+</body>
+</html>

@@ -44,8 +44,6 @@
   .topnav { display: flex; gap: 20px; flex: 1; }
   .topnav a { color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500; }
   .topnav a:hover, .topnav a.active { color: var(--text); }
-  .site-head .signin { color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
-  .site-head .signin:hover { color: var(--accent); }
 
   /* ---------- category tabs ---------- */
   /* tabs left, share pinned top-right of the board area */
@@ -222,6 +220,41 @@
   }
   .share-btn:hover { filter: brightness(1.1); }
   .share-btn.copied { background: #23a95f; border-color: #23a95f; color: #eafff2; }
+  /* ---------- email capture ---------- */
+  .modal-back {
+    position: fixed; inset: 0; background: rgba(8,9,11,.78); z-index: 1000;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+    backdrop-filter: blur(3px);
+  }
+  .modal-back.open { display: flex; }
+  .modal {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    max-width: 430px; width: 100%; padding: 26px 26px 22px; text-align: center;
+    box-shadow: 0 24px 70px rgba(0,0,0,.6);
+  }
+  .modal img.mark { height: 26px; width: auto; margin: 0 auto 16px; display: block; }
+  .modal h2 { margin: 0 0 8px; font-size: 20px; letter-spacing: -.02em; }
+  .modal h2 em { font-style: normal; color: var(--money); }
+  .modal p { margin: 0 0 18px; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+  .modal input[type=email] {
+    width: 100%; padding: 11px 13px; border-radius: 8px; border: 1px solid var(--line);
+    background: #0f1114; color: var(--text); font-size: 14.5px; margin-bottom: 10px;
+  }
+  .modal input[type=email]:focus { outline: none; border-color: var(--money); }
+  .modal .go-btn {
+    width: 100%; padding: 12px; border: 0; border-radius: 8px; cursor: pointer;
+    background: var(--money); color: #06180e; font-weight: 800; font-size: 15px;
+  }
+  .modal .go-btn:hover { filter: brightness(1.08); }
+  .modal .go-btn[disabled] { opacity: .6; cursor: default; }
+  .modal .skip {
+    display: block; width: 100%; margin-top: 12px; background: none; border: 0;
+    color: var(--muted); font-size: 13px; cursor: pointer; text-decoration: underline;
+  }
+  .modal .skip:hover { color: var(--text); }
+  .modal .err { color: #ff8080; font-size: 12.5px; margin: 0 0 10px; min-height: 1em; }
+  .modal .fine { margin: 14px 0 0; font-size: 11px; color: var(--faint); line-height: 1.5; }
+
   @media (max-width: 860px) {
     .board-top { flex-direction: column; }
     .share { margin-left: 0; width: 100%; }
@@ -256,14 +289,13 @@
 
 <header class="site-head">
   <div class="wrap">
-    <a class="brand" href="#"><img id="logo" alt="PeptideNugget"></a>
+    <a class="brand" href="/"><img id="logo" alt="PeptideNugget"></a>
     <nav class="topnav">
-      <a href="#" class="active">Tier Lists</a>
-      <a href="#">Leaderboard</a>
-      <a href="#">Vendors</a>
-      <a href="#">Guides</a>
+      <a href="/" class="active">Tier Lists</a>
+      <a href="/guides.html">Guides</a>
+      <a href="/how-ranking-works.html">How Ranking Works</a>
+      <a href="/leaderboard.html">Leaderboard</a>
     </nav>
-    <a class="signin" href="#">Sign in</a>
   </div>
 </header>
 
@@ -316,23 +348,23 @@
       </div>
       <div class="foot-col">
         <h3>Tier Lists</h3>
-        <a href="#">Peptides</a>
-        <a href="#">Bac Water &amp; Supplies</a>
-        <a href="#">Coolers &amp; Storage</a>
+        <a href="/#c=compounds">Peptides</a>
+        <a href="/#c=bacwater">Supplies &amp; Storage</a>
+        <a href="/#c=finds">Amazon Finds</a>
       </div>
       <div class="foot-col">
         <h3>Community</h3>
-        <a href="#">How ranking works</a>
-        <a href="#">Submit a vendor</a>
-        <a href="#">Request a template</a>
-        <a href="#">Leaderboard</a>
+        <a href="/how-ranking-works.html">How ranking works</a>
+        <a href="/leaderboard.html">Leaderboard</a>
+        <a href="/submit.html">Submit a product</a>
+        <a href="/guides.html">Guides</a>
       </div>
       <div class="foot-col">
         <h3>Site</h3>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Privacy policy</a>
-        <a href="#">Terms of use</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="/terms.html">Terms of use</a>
       </div>
     </div>
 
@@ -347,6 +379,23 @@
 </footer>
 
 <div id="ghost"></div>
+
+<div class="modal-back" id="captureBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="capTitle">
+    <img class="mark" id="capLogo" alt="PeptideNugget">
+    <h2 id="capTitle">Want the <em>best prices</em> first?</h2>
+    <p>We track price drops on peptide gear and send a short weekly roundup.
+       Drop your email, or skip straight through — your link opens either way.</p>
+    <p class="err" id="capErr"></p>
+    <form id="capForm" novalidate>
+      <input type="email" id="capEmail" placeholder="you@email.com" autocomplete="email" required>
+      <button type="submit" class="go-btn" id="capGo">Get deals &amp; continue</button>
+    </form>
+    <button class="skip" id="capSkip">No thanks, just take me to the product →</button>
+    <p class="fine">No spam, unsubscribe anytime. We earn a commission on purchases
+       made through our links, at no extra cost to you.</p>
+  </div>
+</div>
 
 <script>
 "use strict";
@@ -667,10 +716,112 @@ document.addEventListener("pointerup", (e) => {
 /* Capture phase so the anchor's default navigation is cancelled before
    it runs. A clean tap falls through untouched and opens the link. */
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".tile")) return;
-  if (suppressClick) { e.preventDefault(); e.stopPropagation(); }
+  const tile = e.target.closest(".tile");
+  if (!tile) return;
+  if (suppressClick) { e.preventDefault(); e.stopPropagation(); suppressClick = false; return; }
   suppressClick = false;
+
+  // Affiliate clicks get one email prompt before we hand them off. Peptide
+  // tiles aren't monetised, so they're never interrupted.
+  if (CATEGORIES[state.category].storefront === "amazon" && shouldAskEmail()) {
+    e.preventDefault();
+    e.stopPropagation();
+    openCapture(tile.href);
+  }
 }, true);
+
+/* ------------------------- email capture -------------------------- */
+/* One modal between an affiliate click and Amazon. Whether they subscribe
+   or skip, the product link ALWAYS opens — the offer is the reason they
+   clicked, and burying it behind a form is how you lose the commission.
+   window.open() fires inside the button's own click handler so it counts
+   as a user gesture and survives popup blockers. */
+
+const CAPTURE_KEY = "pn_capture_v1";
+const SKIP_TTL = 7 * 24 * 60 * 60 * 1000;   // re-ask a skipper after a week
+
+let pendingUrl = null;
+
+function captureState() {
+  try { return JSON.parse(localStorage.getItem(CAPTURE_KEY)) || null; } catch (e) { return null; }
+}
+function setCaptureState(status) {
+  try { localStorage.setItem(CAPTURE_KEY, JSON.stringify({ status, at: Date.now() })); } catch (e) {}
+}
+function shouldAskEmail() {
+  const s = captureState();
+  if (!s) return true;
+  if (s.status === "subscribed") return false;         // never nag a subscriber
+  return Date.now() - s.at > SKIP_TTL;
+}
+
+function openCapture(url) {
+  pendingUrl = url;
+  $("#capErr").textContent = "";
+  $("#capEmail").value = "";
+  $("#capGo").disabled = false;
+  $("#capGo").textContent = "Get deals & continue";
+  $("#captureBack").classList.add("open");
+  setTimeout(() => $("#capEmail").focus(), 50);
+}
+
+function closeCapture() {
+  $("#captureBack").classList.remove("open");
+  pendingUrl = null;
+}
+
+/** Hand off to Amazon. Must be called synchronously from a click handler. */
+function handOff() {
+  if (!pendingUrl) return closeCapture();
+  window.open(pendingUrl, "_blank", "noopener,noreferrer");
+  closeCapture();
+}
+
+$("#capSkip").addEventListener("click", () => {
+  setCaptureState("skipped");
+  handOff();
+});
+
+$("#captureBack").addEventListener("click", (e) => {
+  // Clicking the backdrop is a skip, but it must not swallow the offer.
+  if (e.target === $("#captureBack")) { setCaptureState("skipped"); handOff(); }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && $("#captureBack").classList.contains("open")) {
+    setCaptureState("skipped");
+    handOff();
+  }
+});
+
+$("#capForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const email = $("#capEmail").value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
+    $("#capErr").textContent = "That doesn't look like a valid email.";
+    return;
+  }
+  setCaptureState("subscribed");
+
+  // Fire-and-forget: the signup must never delay or block the affiliate
+  // hand-off, and a subscribe outage must not cost us the click.
+  try {
+    const body = JSON.stringify({
+      email,
+      source: "tier-board",
+      category: state.category,
+      product: pendingUrl,
+    });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon("/api/subscribe", new Blob([body], { type: "application/json" }));
+    } else {
+      fetch("/api/subscribe", { method: "POST", headers: { "content-type": "application/json" },
+                                body, keepalive: true }).catch(() => {});
+    }
+  } catch (err) { /* never block the hand-off */ }
+
+  handOff();   // still inside the submit gesture, so the tab opens
+});
 
 function zoneAt(x, y) {
   ghost.style.display = "none";
@@ -1002,6 +1153,7 @@ const slug = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/
 
 $("#logo").src = LOGO_SRC;
 $("#footLogo").src = LOGO_SRC;
+$("#capLogo").src = LOGO_SRC;
 
 const favicon = document.createElement("link");
 favicon.rel = "icon";
@@ -1051,11 +1203,18 @@ $("#btnExport").addEventListener("click", exportPNG);
 $("#btnShare").addEventListener("click", copyShare);
 $("#shareUrl").addEventListener("click", copyShare);
 
-// A shared link wins over the default board; fall back if it's malformed.
+/* Three ways in, in priority order:
+     #s=<code>  a full shared board
+     #c=<key>   a plain category link (the footer uses these)
+     nothing    the default board                                     */
 const shared = location.hash.match(/[#&]s=([A-Za-z0-9_-]+)/);
+const wanted = location.hash.match(/[#&]c=([a-z]+)/);
+const direct = wanted && CATEGORIES[wanted[1]] && !CATEGORIES[wanted[1]].hidden ? wanted[1] : null;
+
 if (!(shared && applyBoard(shared[1]))) {
-  loadCategory("compounds");
-  syncTabs("compounds");
+  const key = direct || "compounds";
+  loadCategory(key);
+  syncTabs(key);
 }
 </script>
 </body>

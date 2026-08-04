@@ -81,10 +81,19 @@ async function cachedProductImage(asin, url) {
   }
   console.log(`   ${withArt}/${total} items have product art`);
 
+  // Vial art is swappable: data/site.json -> "vialArt": "photo" | "illustration".
+  // Both are red-liquid-on-grey, so hue-rotation colour-codes either one.
+  const site = fs.existsSync(p("data/site.json"))
+    ? JSON.parse(fs.readFileSync(p("data/site.json"), "utf8")) : {};
+  const style = site.vialArt === "illustration" ? "illustration" : "photo";
+  const vialFile = p(`assets/vial-${style}.png`);
+  if (!fs.existsSync(vialFile)) throw new Error(`vialArt "${style}" -> missing ${vialFile}`);
+  console.log(`vial art: ${style}`);
+
   const assets = {
     __LOGO_SRC__: p("assets/logo-lockup.png"),
     __ICON_SRC__: p("assets/favicon.png"),
-    __VIAL_SRC__: p("assets/vial-base.png"),
+    __VIAL_SRC__: vialFile,
   };
   for (const [token, file] of Object.entries(assets)) {
     if (!html.includes(token)) throw new Error("template missing " + token);
@@ -93,6 +102,37 @@ async function cachedProductImage(asin, url) {
 
   if (!html.includes("__CATALOG__")) throw new Error("template missing __CATALOG__");
   html = html.replace("__CATALOG__", JSON.stringify(catalog, null, 2));
+
+  // ---- content pages ------------------------------------------------
+  // Each pages/**.html is a body fragment with <!--title:--> / <!--desc:-->
+  // headers, rendered into src/layout.html. Keeps chrome in exactly one place.
+  const layout = fs.readFileSync(p("src/layout.html"), "utf8");
+  const pageFiles = [];
+  (function walk(dir, prefix = "") {
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir)) {
+      const full = path.join(dir, f);
+      if (fs.statSync(full).isDirectory()) walk(full, prefix + f + "/");
+      else if (f.endsWith(".html")) pageFiles.push({ full, slug: prefix + f });
+    }
+  })(p("pages"));
+
+  for (const { full, slug } of pageFiles) {
+    const raw = fs.readFileSync(full, "utf8");
+    const meta = (k, d) => (raw.match(new RegExp("<!--\\s*" + k + ":\\s*([^>]*?)\\s*-->")) || [, d])[1];
+    let out = layout
+      .replace("{{TITLE}}", meta("title", "PeptideNugget"))
+      .replace("{{DESC}}", meta("desc", ""))
+      .replace("{{EXTRA_CSS}}", (raw.match(/<style>([\s\S]*?)<\/style>/) || [, ""])[1])
+      .replace("{{CONTENT}}", raw.replace(/<!--[\s\S]*?-->/g, "").replace(/<style>[\s\S]*?<\/style>/g, ""));
+    for (const [token, file] of Object.entries(assets)) {
+      out = out.split(token).join(dataUri(file));
+    }
+    const dest = path.join(path.dirname(PUBLIC), slug);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, out);
+    console.log(`page  ${slug}  (${(out.length / 1024).toFixed(0)}kb)`);
+  }
 
   // Two outputs, same bytes: prototype/ for local poking, public/index.html as
   // the deploy artifact. It's self-contained, so any static host serves it
