@@ -491,12 +491,6 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
             <b>Tap</b> any item to <span className={styles.price}>check current pricing</span>.
           </span>
         </div>
-        {isAffiliate(key) && (
-          <p className={styles.adNotice}>
-            <b>#ad</b> — product links on this list are affiliate links. We earn a
-            commission if you buy through them, at no extra cost to you.
-          </p>
-        )}
       </div>
 
       <div className={styles.board} ref={boardRef}>
