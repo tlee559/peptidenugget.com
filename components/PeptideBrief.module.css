@@ -40,7 +40,12 @@
 .aside b { color: #cbd0d8; font-weight: 600; }
 
 @media (max-width: 640px) {
-  .brief { padding: 15px 16px; margin: 18px 0 4px; }
-  .lead { font-size: 14px; }
-  .aside { font-size: 13px; padding-left: 10px; }
+  /* No top margin: main.wrap already pads below the header, and the two
+     stacked together read as a hole in the page. */
+  .brief { padding: 14px 15px; margin: 0 0 4px; }
+  .h { font-size: 15.5px; margin-bottom: 8px; }
+  /* Tighter leading and gaps. Same words, ~50px less of them — which on a
+     phone is the difference between the S row peeking in and not. */
+  .lead { font-size: 14px; line-height: 1.55; margin-bottom: 9px; }
+  .aside { font-size: 13px; line-height: 1.5; padding-left: 10px; margin-bottom: 9px; }
 }

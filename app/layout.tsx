@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { visibleCategories, KEY_TO_SLUG } from "@/lib/catalog";
@@ -20,6 +20,18 @@ export const metadata: Metadata = {
     images: ["/img/logo.png"],
   },
   twitter: { card: "summary_large_image" },
+};
+
+/* We were shipping a bare `width=device-width` with no initial-scale, which
+   leaves phones free to pick their own starting zoom. viewportFit:"cover" is
+   what actually turns on env(safe-area-inset-*) — the tier picker was already
+   padding itself with it, but the value resolved to 0 on every notched phone,
+   so the sheet sat under the home indicator. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#16181c",
 };
 
 /* Derived from the catalogue, not hardcoded — a hidden category used to leave

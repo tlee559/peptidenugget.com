@@ -23,13 +23,38 @@ html, body {
   color: var(--text);
   font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
+  /* Backstop, not a fix: one stray wide child used to make the whole document
+     pan sideways, which on a touch screen reads as the page being broken.
+     `clip` rather than `hidden` so it can't silently create a scroll container
+     (nothing here is position:sticky, but that stays true for free this way). */
+  overflow-x: clip;
 }
+/* iOS inflates text in the taller dimension unless told not to, which is what
+   made landscape look like a different design than portrait. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 a { color: var(--accent); }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+
+/* Nothing may exceed its column: media that ignores this is the single most
+   common source of horizontal scroll. */
+img, svg, video, canvas, iframe { max-width: 100%; }
+/* Long compound names, pasted share URLs and the contact address are all
+   unbreakable strings that used to push the layout wider than the screen. */
+p, li, h1, h2, h3, td, th, dd, dt, figcaption { overflow-wrap: break-word; }
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  /* viewport-fit:cover lets content under the rounded corners in landscape;
+     max() keeps the normal 16px gutter and only grows it where the notch is. */
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
 
 /* ---------- site chrome ---------- */
 .site-head { border-bottom: 1px solid var(--line); background: rgba(22,24,28,.92); }
-.site-head .wrap { display: flex; align-items: center; gap: 22px; padding: 15px 16px; }
+/* Longhand, not shorthand: the shorthand reset the safe-area gutters .wrap
+   sets and pushed the logo under the notch in landscape. */
+.site-head .wrap { display: flex; align-items: center; gap: 22px; padding-top: 15px; padding-bottom: 15px; }
 .brand { display: flex; align-items: center; flex: 0 0 auto; }
 .brand img { height: 28px; width: auto; max-width: 62vw; display: block; }
 .topnav { display: flex; gap: 20px; flex: 1; }
@@ -75,10 +100,56 @@ th { background: var(--panel-2); font-weight: 600; }
 .card h3 { margin: 0 0 6px; color: var(--text); }
 .card p { margin: 0; font-size: 13.5px; color: var(--muted); }
 
-@media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px; } }
+/* The footer used to collapse straight to one column, which turned four short
+   link groups into a tower you had to scroll past. Brand spans the top, links
+   pair up — same content, roughly half the height. */
+@media (max-width: 900px) {
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px 22px; }
+  .foot-brand { grid-column: 1 / -1; }
+}
 @media (max-width: 720px) {
   .topnav { display: none; }
   .brand img { height: 21px; }
-  .foot-grid { grid-template-columns: 1fr; }
   h1 { font-size: 26px; }
+}
+
+/* ---------- phone ----------
+   Desktop spacing scaled down rather than reused: the same 34/56px rhythm that
+   reads as generous on a monitor eats a third of a phone screen. */
+@media (max-width: 640px) {
+  /* 4px back off each gutter. Sounds trivial; it is the difference between two
+     and three product tiles per tier row at 360px. */
+  .wrap {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .site-head .wrap { padding-top: 12px; padding-bottom: 12px; gap: 14px; }
+
+  main.wrap { padding-top: 20px; }
+  h1 { font-size: 24px; letter-spacing: -.02em; }
+  .lede { font-size: 15.5px; margin-bottom: 22px; }
+  h2 { font-size: 19px; margin: 26px 0 10px; }
+  h3 { font-size: 15.5px; margin: 18px 0 7px; }
+  ul, ol { padding-left: 20px; }
+
+  .box { padding: 13px 15px; margin: 18px 0; }
+  .card { padding: 15px; }
+  .card-grid { gap: 12px; margin: 18px 0; }
+
+  .site-foot {
+    margin-top: 40px;
+    padding-top: 26px;
+    /* Clears the home indicator now that viewport-fit is cover. */
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+  }
+  .foot-legal { margin-top: 24px; padding-top: 16px; }
+
+  /* Board geometry. Set here rather than on .board because the staging pool is
+     a sibling of the board, not a descendant — sized separately, they used to
+     disagree. With the 12px gutters above, 56px + 3x84 + gaps clears 360px. */
+  :root { --tile: 84px; --label-w: 56px; }
+}
+
+@media (max-width: 430px) {
+  .foot-grid { grid-template-columns: 1fr; gap: 22px; }
 }

@@ -181,7 +181,12 @@
 /* ---------- capture modal ---------- */
 .modalBack {
   position: fixed; inset: 0; background: rgba(8,9,11,.78); z-index: 1000;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
+  display: flex; align-items: center; justify-content: center;
+  /* Insets keep it off the notch and the home indicator in landscape, where a
+     fixed 20px is measured from the physical edge, not the safe one. */
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+           max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  overflow-y: auto;
   backdrop-filter: blur(3px);
 }
 .modal {
@@ -223,13 +228,13 @@
 @media (max-width: 720px) {
   .rowLabel span { font-size: 14px; }
 }
-/* Narrower tier label + no tools column = 3 products per row instead of 2. */
+/* Narrower tier label + no tools column = 3 products per row instead of 2.
+   The sizes themselves now live on :root in globals.css so the pool and the
+   board can't drift apart — the pool sits outside .board, so overriding the
+   vars here only ever reached half the tiles. */
 @media (max-width: 640px) {
-  .board { --label-w: 62px; --tile: 84px; }
-  .rowLabel { width: 62px; flex: 0 0 62px; padding: 6px 4px; }
+  .rowLabel { padding: 6px 4px; }
   .rowLabel span { font-size: 15px; }
-  .tile { width: 84px; height: 84px; }
-  .pool .tile { width: 84px; height: 84px; }
 }
 
 /* FTC disclosure. Sits with the links, not in the footer — "clearly and
@@ -274,8 +279,21 @@
   .shareTitle { font-size: 10px; }
   .shareBtn { padding: 9px 14px; font-size: 13.5px; }
 
-  .boardTitle { font-size: 20px; padding-left: 0; }
+  .boardTitle { font-size: 20px; padding-left: 0; max-width: 100%; min-width: 0; }
   .titleBar { margin-bottom: 10px; }
+
+  /* The title drops to a 0 left edge on mobile and the callout follows it, but
+     the disclosure kept an 8px indent — three stacked elements, three
+     different left edges. Line them all up. */
+  .adNotice { margin-left: 0; }
+
+  /* Vertical rhythm: the desktop gaps between tabs, board, pool and toolbar
+     add up to most of a screen on a phone. */
+  .boardTop { margin: 18px 0 14px; gap: 12px; }
+  .poolHead { margin: 14px 0 7px; }
+  .pool { padding: 8px; min-height: 96px; }
+  .toolbar { gap: 7px; margin-top: 13px; }
+  .btn { padding: 10px 13px; }   /* ~40px tall — a real touch target */
 
   /* Row tools are fiddly on touch anyway; dropping them buys ~36px, which
      is a whole extra product per row. */
