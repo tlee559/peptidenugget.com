@@ -18,6 +18,13 @@ export type Category = {
   preset: PresetKey;
   storefront?: "amazon" | "aminoclub" | "search";
   affiliateUrl?: string;
+  /** Merchant name shown next to the price. Naming who the price belongs to is
+   *  what keeps a displayed price a quote rather than a claim. */
+  vendor?: string;
+  /** ISO date the prices were last verified. Rendered as "checked <date>" when
+   *  set, omitted entirely when not — an unverifiable freshness claim is worse
+   *  than none. */
+  pricesUpdated?: string;
   vials?: boolean;
   hidden?: boolean;
   brief?: boolean;     // show the plain-English peptide primer above the board

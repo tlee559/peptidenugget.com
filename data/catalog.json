@@ -37,7 +37,8 @@
         "url": "https://peptime.link/SQtdEi0"
       }
     ],
-    "brief": true
+    "brief": true,
+    "vendor": "Peptime"
   },
   "compounds": {
     "label": "Peptides",
@@ -264,7 +265,8 @@
         "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
       }
     ],
-    "brief": true
+    "brief": true,
+    "vendor": "Amino Club"
   },
   "finds": {
     "label": "Amazon Finds",

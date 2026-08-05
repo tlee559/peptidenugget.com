@@ -128,6 +128,41 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
   const stateRef = useRef({ rows, pool, key });
   stateRef.current = { rows, pool, key };
 
+  /* ---------------------- price + CTA messaging ----------------------- */
+  /* The verb has to match where the link actually lands. "Buy" on a merchant
+     homepage is a promise that breaks on arrival, and the bounce lands on our
+     conversion rate with the partner — so it is earned by per-product links,
+     not chosen. Derived from the data rather than a flag so it corrects itself
+     the moment real product URLs are filled in. */
+  const { ctaLine, priceNote } = useMemo(() => {
+    const items = cat?.items ?? [];
+    const deepLinked = new Set(items.map((i) => i.url ?? "")).size > 1;
+    const priced = items.filter((i) => typeof i.price === "number").length;
+    const vendor = cat?.vendor;
+
+    const verb = deepLinked ? "buy" : "shop";
+    const where = vendor ? ` at ${vendor}` : "";
+    const cta = priced
+      ? `Tap any tile to ${verb}${where}.`
+      : `Tap any item to check current pricing.`;
+
+    if (!priced || !vendor) return { ctaLine: cta, priceNote: "" };
+    const checked = cat?.pricesUpdated
+      ? `, checked ${new Date(cat.pricesUpdated + "T00:00:00Z").toLocaleDateString(undefined, {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          timeZone: "UTC",
+        })}`
+      : "";
+    return {
+      ctaLine: cta,
+      // Attribution is what keeps a displayed number a quote rather than our
+      // claim, and it is the line that protects us when a price drifts.
+      priceNote: `Prices are ${vendor}'s and may change${checked}.`,
+    };
+  }, [cat]);
+
   /* ------------------------ category switching ------------------------ */
   const switchTo = useCallback((k: string) => {
     const s = loadCategory(k);
@@ -612,7 +647,16 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
         ) : (
           <span className={styles.accentBar} style={{ background: accentFor(t.name) }} />
         )}
-        <span className={imgMode && pic ? styles.nameOver : styles.name}>{t.name}</span>
+        <span className={imgMode && pic ? styles.nameOver : styles.name}>
+          {t.name}
+          {/* The price IS the call to action. Showing it before the click means
+              whoever clicks has already accepted the number, which is the
+              highest-intent click this page can produce — and it stops us
+              sending price-shoppers to the merchant to bounce. */}
+          {typeof t.price === "number" && (
+            <b className={styles.tilePrice}>${t.price.toFixed(2)}</b>
+          )}
+        </span>
         <span className={styles.go}>↗</span>
         <span className={styles.grip} data-grip aria-hidden="true">⠿</span>
       </a>
@@ -669,9 +713,10 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
           <span className={styles.track} aria-hidden="true"><i /></span>
           <span>
             <b>Drag to rank.</b><span className={styles.sep}>·</span>
-            <span className={styles.price}>Tap any item to check current pricing.</span>
+            <span className={styles.price}>{ctaLine}</span>
           </span>
         </div>
+        {priceNote && <p className={styles.priceNote}>{priceNote}</p>}
       </div>
 
       <div className={styles.board} ref={boardRef}>
