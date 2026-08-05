@@ -29,7 +29,7 @@ export default async function TierPage({ params }: { params: Promise<{ slug: str
   if (!key || !CATALOG[key] || CATALOG[key].hidden) notFound();
   return (
     <main className="wrap">
-      {CATALOG[key].brief && <PeptideBrief />}
+      {CATALOG[key].brief && <PeptideBrief count={CATALOG[key].items.length} />}
       <TierBoard categoryKey={key} />
     </main>
   );

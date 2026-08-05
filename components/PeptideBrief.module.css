@@ -1,5 +1,6 @@
 /* Sits above the board, so it stays short — the products still need to be
-   reachable without a long scroll on a phone. */
+   reachable without a long scroll on a phone. Four short paragraphs is the
+   ceiling; anything longer pushes the S row off the fold. */
 .brief {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -25,7 +26,21 @@
 .lead b { color: var(--text); }
 .lead:last-child { margin-bottom: 0; }
 
+/* The definition. Set back from the sales beats so it reads as a footnote for
+   whoever needs it, without interrupting the pain → solution → action run. */
+.aside {
+  margin: 0 0 11px;
+  padding-left: 11px;
+  border-left: 2px solid var(--line);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 68ch;
+}
+.aside b { color: #cbd0d8; font-weight: 600; }
+
 @media (max-width: 640px) {
   .brief { padding: 15px 16px; margin: 18px 0 4px; }
   .lead { font-size: 14px; }
+  .aside { font-size: 13px; padding-left: 10px; }
 }
