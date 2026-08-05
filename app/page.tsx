@@ -1,6 +1,5 @@
 import TierBoard from "@/components/TierBoard";
 import PeptideBrief from "@/components/PeptideBrief";
-import Comments from "@/components/Comments";
 import { CATALOG } from "@/lib/catalog";
 
 export const metadata = {
@@ -15,7 +14,6 @@ export default function Home() {
     <main className="wrap">
       <PeptideBrief count={CATALOG.compounds.items.length} />
       <TierBoard categoryKey="compounds" />
-      <Comments categoryKey="compounds" boardLabel={CATALOG.compounds.label} />
     </main>
   );
 }
