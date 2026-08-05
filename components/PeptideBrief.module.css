@@ -1,6 +1,5 @@
-/* Sits above the board, so it has to stay compact — the products still need to
-   be reachable without a long scroll on a phone. Everything past the first two
-   paragraphs is behind a disclosure. */
+/* Sits above the board, so it stays short — the products still need to be
+   reachable without a long scroll on a phone. */
 .brief {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -17,63 +16,14 @@
   color: var(--text);
 }
 .lead {
-  margin: 0 0 10px;
+  margin: 0 0 11px;
   font-size: 14.5px;
   line-height: 1.65;
   color: #cbd0d8;
   max-width: 68ch;
 }
 .lead b { color: var(--text); }
-
-.more { margin-top: 6px; }
-.summary {
-  cursor: pointer;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--money);
-  padding: 6px 0;
-  list-style: none;
-}
-.summary::-webkit-details-marker { display: none; }
-.summary::before { content: "▸ "; display: inline-block; transition: transform .15s; }
-.more[open] .summary::before { content: "▾ "; }
-.summary:hover { filter: brightness(1.15); }
-
-.moreBody { padding-top: 6px; }
-.h3 {
-  margin: 16px 0 6px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: var(--muted);
-}
-.p {
-  margin: 0 0 10px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #cbd0d8;
-  max-width: 68ch;
-}
-.p b { color: var(--text); }
-
-.defs { margin: 0 0 4px; padding-left: 18px; }
-.defs li {
-  font-size: 13.5px;
-  line-height: 1.6;
-  color: #cbd0d8;
-  margin: 4px 0;
-}
-.defs b { color: var(--text); }
-
-.fine {
-  margin: 14px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  font-size: 11.5px;
-  line-height: 1.6;
-  color: var(--faint);
-  max-width: 78ch;
-}
+.lead:last-child { margin-bottom: 0; }
 
 @media (max-width: 640px) {
   .brief { padding: 15px 16px; margin: 18px 0 4px; }
