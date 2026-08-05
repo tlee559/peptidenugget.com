@@ -69,14 +69,19 @@
   outline: none;
   border-color: var(--accent);
 }
-/* Honeypot: out of flow and unreachable, but not display:none — some bots
-   skip hidden fields. */
+/* Honeypot: present in the DOM for bots to fill, invisible and unreachable for
+   people. Clipped rather than parked at left:-9999px — the offset version is
+   flagged by any overflow audit, and display:none is skipped by some bots. */
 .hp {
   position: absolute;
-  left: -9999px;
   width: 1px;
   height: 1px;
-  opacity: 0;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .composerFoot {
   display: flex;
