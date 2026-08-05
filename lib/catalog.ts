@@ -20,6 +20,7 @@ export type Category = {
   affiliateUrl?: string;
   vials?: boolean;
   hidden?: boolean;
+  brief?: boolean;     // show the plain-English peptide primer above the board
   research?: boolean;   // renders its tab in black, matching the storefront
   discover?: { search: string; match?: string[]; limit?: number };
   items: Item[];

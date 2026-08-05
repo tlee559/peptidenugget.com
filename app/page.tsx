@@ -1,4 +1,5 @@
 import TierBoard from "@/components/TierBoard";
+import PeptideBrief from "@/components/PeptideBrief";
 
 export const metadata = {
   title: "Community Peptide Tier Lists",
@@ -10,6 +11,7 @@ export const metadata = {
 export default function Home() {
   return (
     <main className="wrap">
+      <PeptideBrief />
       <TierBoard categoryKey="compounds" />
     </main>
   );

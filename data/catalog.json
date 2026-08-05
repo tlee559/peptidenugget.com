@@ -6,13 +6,38 @@
     "storefront": "aminoclub",
     "vials": true,
     "items": [
-      { "name": "Reta", "tier": 0, "url": "https://peptime.link/92yViLn" },
-      { "name": "BPC-157", "tier": 1, "url": "https://peptime.link/QMTl0SX" },
-      { "name": "Semaglutide", "tier": 2, "url": "https://peptime.link/J3MUnaD" },
-      { "name": "TB-500", "tier": 3, "url": "https://peptime.link/5CKVrWZ" },
-      { "name": "MOTS-c", "tier": 4, "url": "https://peptime.link/OdykGLa" },
-      { "name": "NAD+", "tier": 5, "url": "https://peptime.link/SQtdEi0" }
-    ]
+      {
+        "name": "Reta",
+        "tier": 0,
+        "url": "https://peptime.link/92yViLn"
+      },
+      {
+        "name": "BPC-157",
+        "tier": 1,
+        "url": "https://peptime.link/QMTl0SX"
+      },
+      {
+        "name": "Semaglutide",
+        "tier": 2,
+        "url": "https://peptime.link/J3MUnaD"
+      },
+      {
+        "name": "TB-500",
+        "tier": 3,
+        "url": "https://peptime.link/5CKVrWZ"
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 4,
+        "url": "https://peptime.link/OdykGLa"
+      },
+      {
+        "name": "NAD+",
+        "tier": 5,
+        "url": "https://peptime.link/SQtdEi0"
+      }
+    ],
+    "brief": true
   },
   "compounds": {
     "label": "Peptides",
@@ -238,7 +263,8 @@
         "price": 39.99,
         "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
       }
-    ]
+    ],
+    "brief": true
   },
   "finds": {
     "label": "Amazon Finds",

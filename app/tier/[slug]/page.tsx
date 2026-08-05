@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TierBoard from "@/components/TierBoard";
+import PeptideBrief from "@/components/PeptideBrief";
 import { CATALOG, SLUGS, KEY_TO_SLUG, visibleCategories } from "@/lib/catalog";
 
 /* Every visible list is a real, crawlable page with its own metadata — the
@@ -28,6 +29,7 @@ export default async function TierPage({ params }: { params: Promise<{ slug: str
   if (!key || !CATALOG[key] || CATALOG[key].hidden) notFound();
   return (
     <main className="wrap">
+      {CATALOG[key].brief && <PeptideBrief />}
       <TierBoard categoryKey={key} />
     </main>
   );
