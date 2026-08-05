@@ -95,6 +95,9 @@ const slugify = (s: string) =>
   s.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "tier-list";
 
 const CAPTURE_KEY = "pn_capture_v1";
+/* Separate key so the export prompt is genuinely once-ever, whichever way it
+   was answered — the affiliate prompt re-asks skippers after a week. */
+const EXPORT_GATE_KEY = "pn_export_gate_v1";
 const SKIP_TTL = 7 * 24 * 60 * 60 * 1000;   // re-ask a skipper after a week
 
 /* ------------------------------ component ------------------------------ */
@@ -113,6 +116,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
 
   const [picker, setPicker] = useState<string | null>(null);
   const [captureFor, setCaptureFor] = useState<string | null>(null);
+  const [exportGate, setExportGate] = useState(false);
   const [email, setEmail] = useState("");
   const [capErr, setCapErr] = useState("");
 
@@ -409,10 +413,36 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
   const remember = (status: string) => {
     try { localStorage.setItem(CAPTURE_KEY, JSON.stringify({ status, at: Date.now() })); } catch {}
   };
+  const markExportSeen = () => {
+    try { localStorage.setItem(EXPORT_GATE_KEY, "1"); } catch {}
+  };
+
+  /* Whatever the prompt was guarding still happens — subscribe or skip. The
+     export is the thing they asked for; withholding it to farm an email is how
+     you lose the share, which is the whole distribution loop. */
   const handOff = () => {
+    if (exportGate) {
+      markExportSeen();
+      setExportGate(false);
+      void exportPNG();
+      return;
+    }
     if (captureFor) window.open(captureFor, "_blank", "noopener,noreferrer");
     setCaptureFor(null);
   };
+
+  /* Export asks once, ever. Already subscribed anywhere on the site? Never ask. */
+  const requestExport = () => {
+    let seen = false, subscribed = false;
+    try {
+      seen = !!localStorage.getItem(EXPORT_GATE_KEY);
+      const st = JSON.parse(localStorage.getItem(CAPTURE_KEY) || "null");
+      subscribed = st?.status === "subscribed";
+    } catch { /* no storage: just ask */ }
+    if (seen || subscribed) { void exportPNG(); return; }
+    setCapErr(""); setEmail(""); setExportGate(true);
+  };
+
   const skip = () => { remember("skipped"); handOff(); };
   const subscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -422,7 +452,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
     remember("subscribed");
     // Fire-and-forget: a subscribe outage must never delay the hand-off.
     try {
-      const body = JSON.stringify({ email: email.trim(), source: "tier-board", category: key, product: captureFor });
+      const body = JSON.stringify({ email: email.trim(), source: exportGate ? "export-gate" : "tier-board", category: key, product: captureFor });
       if (navigator.sendBeacon) navigator.sendBeacon("/api/subscribe", new Blob([body], { type: "application/json" }));
       else fetch("/api/subscribe", { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => {});
     } catch {}
@@ -713,7 +743,7 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
           const s = loadCategory(key);
           setRows(s.rows); setPool(s.pool); setTitle(s.title); setPresetIdx(s.presetIdx);
         }}>Reset</button>
-        <button className={`${styles.btn} ${styles.primary}`} onClick={exportPNG}>Export PNG</button>
+        <button className={`${styles.btn} ${styles.primary}`} onClick={requestExport}>Export PNG</button>
       </div>
 
       <div className={styles.ghost} ref={ghostRef} />
@@ -751,26 +781,41 @@ export default function TierBoard({ categoryKey }: { categoryKey: string }) {
         );
       })()}
 
-      {captureFor && (
+      {(captureFor || exportGate) && (
         <div className={styles.modalBack} onClick={(e) => { if (e.target === e.currentTarget) skip(); }}>
           <div className={styles.modal} role="dialog" aria-modal="true">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className={styles.mark} src="/img/logo.png" alt="PeptideNugget" />
-            <h2>Want the <em>best prices</em> first?</h2>
-            <p>
-              We track price drops across the catalogue and send a short weekly roundup.
-              Drop your email, or skip straight through — your link opens either way.
-            </p>
+            {exportGate ? (
+              <>
+                <h2>Want <em>price drops</em> too?</h2>
+                <p>
+                  Your image is downloading either way. Drop your email and we&rsquo;ll
+                  send a short weekly roundup when prices move. We only ask once.
+                </p>
+              </>
+            ) : (
+              <>
+                <h2>Want the <em>best prices</em> first?</h2>
+                <p>
+                  We track price drops across the catalogue and send a short weekly
+                  roundup. Drop your email, or skip straight through — your link opens
+                  either way.
+                </p>
+              </>
+            )}
             <p className={styles.err}>{capErr}</p>
             <form onSubmit={subscribe}>
               <input
                 type="email" placeholder="you@email.com" autoComplete="email"
                 value={email} onChange={(e) => setEmail(e.target.value)} autoFocus
               />
-              <button type="submit" className={styles.goBtn}>Get deals &amp; continue</button>
+              <button type="submit" className={styles.goBtn}>
+                {exportGate ? "Sign me up & download" : "Get deals & continue"}
+              </button>
             </form>
             <button className={styles.skip} onClick={skip}>
-              No thanks, just take me to the product →
+              {exportGate ? "No thanks, just download my image →" : "No thanks, just take me to the product →"}
             </button>
             <p className={styles.fine}>
               No spam, unsubscribe anytime. We earn a commission on purchases made
