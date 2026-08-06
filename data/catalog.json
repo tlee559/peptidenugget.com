@@ -49,7 +49,7 @@
   },
   "biotop6": {
     "label": "Bioinfinity Top 6",
-    "title": "Bioinfinity Top 6 Peptides",
+    "title": "Bioinfinity: The 6 FDA-Voted Peptides, Ranked",
     "preset": "grade",
     "storefront": "bioinfinity",
     "vials": true,
@@ -67,28 +67,27 @@
         "price": 55
       },
       {
-        "name": "GLP1-S",
-        "tier": 2,
-        "url": "https://bioinfinity.co/nuggets/glp1-s",
-        "price": 45
-      },
-      {
         "name": "MOTS-c",
-        "tier": 3,
+        "tier": 2,
         "url": "https://bioinfinity.co/nuggets/mots-c",
         "price": 70
       },
       {
-        "name": "GHK-Cu",
-        "tier": 4,
-        "url": "https://bioinfinity.co/nuggets/ghk-cu",
-        "price": 50
+        "name": "Semax",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/semax",
+        "price": 60
       },
       {
-        "name": "NAD+",
+        "name": "Epitalon",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/epithalon",
+        "price": 55
+      },
+      {
+        "name": "KPV",
         "tier": 5,
-        "url": "https://bioinfinity.co/nuggets/nad",
-        "price": 110
+        "url": "https://bioinfinity.co/nuggets/kpv"
       }
     ],
     "brief": true,
