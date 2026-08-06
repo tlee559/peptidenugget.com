@@ -16,7 +16,7 @@ export type Category = {
   label: string;
   title: string;
   preset: PresetKey;
-  storefront?: "amazon" | "aminoclub" | "search";
+  storefront?: "amazon" | "aminoclub" | "bioinfinity" | "search";
   affiliateUrl?: string;
   /** Merchant name shown next to the price. Naming who the price belongs to is
    *  what keeps a displayed price a quote rather than a claim. */
@@ -51,6 +51,8 @@ export const PRESET_ORDER: PresetKey[] = ["grade", "vendor"];
 /** URL slug <-> catalog key. Slugs are the public contract; keys are internal. */
 export const SLUGS: Record<string, string> = {
   "top-tier": "toptier",
+  "bioinfinity-top-6": "biotop6",
+  bioinfinity: "bioall",
   "fda-voted-peptime": "fdapeptime",
   "fda-voted-amino": "fdaamino",
   peptides: "compounds",
@@ -122,4 +124,5 @@ export function linkFor(item: Item, categoryKey: string): string {
  *  email-capture interstitial. */
 export const isAffiliate = (categoryKey: string) =>
   CATALOG[categoryKey]?.storefront === "amazon" ||
-  CATALOG[categoryKey]?.storefront === "aminoclub";
+  CATALOG[categoryKey]?.storefront === "aminoclub" ||
+  CATALOG[categoryKey]?.storefront === "bioinfinity";

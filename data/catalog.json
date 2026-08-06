@@ -47,6 +47,209 @@
     "vendor": "Peptime",
     "pricesUpdated": "2026-08-05"
   },
+  "biotop6": {
+    "label": "Bioinfinity Top 6",
+    "title": "Bioinfinity Top 6 Peptides",
+    "preset": "grade",
+    "storefront": "bioinfinity",
+    "vials": true,
+    "items": [
+      {
+        "name": "BPC-157",
+        "tier": 0,
+        "url": "https://bioinfinity.co/nuggets/bpc-157",
+        "price": 30
+      },
+      {
+        "name": "TB-500",
+        "tier": 1,
+        "url": "https://bioinfinity.co/nuggets/tb-500",
+        "price": 55
+      },
+      {
+        "name": "GLP1-S",
+        "tier": 2,
+        "url": "https://bioinfinity.co/nuggets/glp1-s",
+        "price": 45
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/mots-c",
+        "price": 70
+      },
+      {
+        "name": "GHK-Cu",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/ghk-cu",
+        "price": 50
+      },
+      {
+        "name": "NAD+",
+        "tier": 5,
+        "url": "https://bioinfinity.co/nuggets/nad",
+        "price": 110
+      }
+    ],
+    "brief": true,
+    "vendor": "Bioinfinity",
+    "pricesUpdated": "2026-08-06"
+  },
+  "bioall": {
+    "label": "Bioinfinity",
+    "title": "Bioinfinity Peptides — Full Tier List",
+    "preset": "grade",
+    "storefront": "bioinfinity",
+    "vials": true,
+    "items": [
+      {
+        "name": "BPC-157",
+        "tier": 0,
+        "url": "https://bioinfinity.co/nuggets/bpc-157",
+        "price": 30
+      },
+      {
+        "name": "GLP1-S",
+        "tier": 0,
+        "url": "https://bioinfinity.co/nuggets/glp1-s",
+        "price": 45
+      },
+      {
+        "name": "TB-500",
+        "tier": 0,
+        "url": "https://bioinfinity.co/nuggets/tb-500",
+        "price": 55
+      },
+      {
+        "name": "GLP3-R",
+        "tier": 1,
+        "url": "https://bioinfinity.co/nuggets/glp3-r",
+        "price": 85
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 1,
+        "url": "https://bioinfinity.co/nuggets/mots-c",
+        "price": 70
+      },
+      {
+        "name": "GHK-Cu",
+        "tier": 1,
+        "url": "https://bioinfinity.co/nuggets/ghk-cu",
+        "price": 50
+      },
+      {
+        "name": "NAD+",
+        "tier": 1,
+        "url": "https://bioinfinity.co/nuggets/nad",
+        "price": 110
+      },
+      {
+        "name": "GLP2-T",
+        "tier": 2,
+        "url": "https://bioinfinity.co/nuggets/glp2-t",
+        "price": 50
+      },
+      {
+        "name": "BPC-157 & TB-500",
+        "tier": 2,
+        "url": "https://bioinfinity.co/nuggets/bpc-157-tb-500",
+        "price": 89
+      },
+      {
+        "name": "CJC-1295 + Ipamorelin",
+        "tier": 2,
+        "url": "https://bioinfinity.co/nuggets/cjc-1295-ipamorelin",
+        "price": 95
+      },
+      {
+        "name": "Glow Blend",
+        "tier": 2,
+        "url": "https://bioinfinity.co/nuggets/glow-blend",
+        "price": 210
+      },
+      {
+        "name": "Semax",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/semax",
+        "price": 60
+      },
+      {
+        "name": "Selank",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/selank",
+        "price": 70
+      },
+      {
+        "name": "DSIP",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/dsip",
+        "price": 70
+      },
+      {
+        "name": "Ipamorelin",
+        "tier": 3,
+        "url": "https://bioinfinity.co/nuggets/ipamorelin",
+        "price": 45
+      },
+      {
+        "name": "5-Amino-1MQ",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/5-amino-1mq",
+        "price": 40
+      },
+      {
+        "name": "SS-31 (Elamipretide)",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/ss-31",
+        "price": 60
+      },
+      {
+        "name": "Epithalon",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/epithalon",
+        "price": 55
+      },
+      {
+        "name": "KLOW Blend",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/klow-blend",
+        "price": 240
+      },
+      {
+        "name": "Thymosin Alpha-1",
+        "tier": 4,
+        "url": "https://bioinfinity.co/nuggets/thymosin-alpha-1",
+        "price": 130
+      },
+      {
+        "name": "CJC-1295 No DAC",
+        "tier": 5,
+        "url": "https://bioinfinity.co/nuggets/cjc-1295-no-dac",
+        "price": 45
+      },
+      {
+        "name": "IGF-1 LR3",
+        "tier": 5,
+        "url": "https://bioinfinity.co/nuggets/igf-1-lr3",
+        "price": 140
+      },
+      {
+        "name": "Bacteriostatic Water",
+        "tier": 5,
+        "url": "https://bioinfinity.co/nuggets/bacteriostatic-water",
+        "price": 22
+      },
+      {
+        "name": "Hospira Bacteriostatic Water (30ml)",
+        "tier": 5,
+        "url": "https://bioinfinity.co/nuggets/hospira-bacteriostatic-water",
+        "price": 38
+      }
+    ],
+    "vendor": "Bioinfinity",
+    "pricesUpdated": "2026-08-06"
+  },
   "compounds": {
     "label": "Peptides",
     "title": "Peptide Tier List",
