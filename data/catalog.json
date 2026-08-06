@@ -841,5 +841,94 @@
         "url": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS"
       }
     ]
+  },
+  "fdapeptime": {
+    "label": "FDA Voted",
+    "title": "The 6 Peptides the FDA Panel Just Voted For",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "vials": true,
+    "navHidden": true,
+    "items": [
+      {
+        "name": "BPC-157",
+        "tier": 0,
+        "url": "https://peptime.link/QMTl0SX",
+        "price": 59
+      },
+      {
+        "name": "TB-500",
+        "tier": 1,
+        "url": "https://peptime.link/5CKVrWZ",
+        "price": 89
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 2,
+        "url": "https://peptime.link/OdykGLa",
+        "price": 99
+      },
+      {
+        "name": "Semax",
+        "tier": 3,
+        "url": "https://peptime.link/SIZ15nY"
+      },
+      {
+        "name": "Epitalon",
+        "tier": 4,
+        "url": "https://peptime.link/SIZ15nY"
+      },
+      {
+        "name": "KPV",
+        "tier": 5,
+        "url": "https://peptime.link/SIZ15nY"
+      }
+    ],
+    "brief": true,
+    "vendor": "Peptime",
+    "pricesUpdated": "2026-08-05"
+  },
+  "fdaamino": {
+    "label": "FDA Voted",
+    "title": "The 6 Peptides the FDA Panel Just Voted For",
+    "preset": "grade",
+    "storefront": "aminoclub",
+    "affiliateUrl": "https://aminoclub.com?utm_source=affiliate_marketing&code=NUGGETS",
+    "vials": true,
+    "navHidden": true,
+    "items": [
+      {
+        "name": "BPC-157",
+        "tier": 0,
+        "price": 39.99
+      },
+      {
+        "name": "TB-500",
+        "tier": 1,
+        "price": 39.99
+      },
+      {
+        "name": "MOTS-c",
+        "tier": 2,
+        "price": 39.99
+      },
+      {
+        "name": "Semax",
+        "tier": 3,
+        "price": 29.95
+      },
+      {
+        "name": "Epitalon",
+        "tier": 4,
+        "price": 29.99
+      },
+      {
+        "name": "KPV",
+        "tier": 5,
+        "price": 39.99
+      }
+    ],
+    "brief": true,
+    "vendor": "Amino Club"
   }
 }

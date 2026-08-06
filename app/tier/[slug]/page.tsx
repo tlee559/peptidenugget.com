@@ -2,12 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import TierBoard from "@/components/TierBoard";
 import PeptideBrief from "@/components/PeptideBrief";
-import { CATALOG, SLUGS, KEY_TO_SLUG, visibleCategories } from "@/lib/catalog";
+import { CATALOG, SLUGS, KEY_TO_SLUG, routableCategories } from "@/lib/catalog";
 
-/* Every visible list is a real, crawlable page with its own metadata — the
-   whole reason this stopped being one static HTML file. */
+/* Every routable list is a real page with its own metadata — the whole reason
+   this stopped being one static HTML file. navHidden ad variants get a page too,
+   just kept out of the nav and noindex'd (see generateMetadata). */
 export function generateStaticParams() {
-  return visibleCategories().map(([key]) => ({ slug: KEY_TO_SLUG[key] }));
+  return routableCategories().map(([key]) => ({ slug: KEY_TO_SLUG[key] }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -20,6 +21,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: `Rank ${cat.items.length} ${cat.label.toLowerCase()} from S to F. Drag to rank, share your list, export the image.`,
     alternates: { canonical: `/tier/${slug}` },
     openGraph: { title: `${cat.title} — PeptideNugget`, type: "article" },
+    // Ad-only A/B variants stay out of the index so two near-duplicate pages
+    // don't compete as duplicate content.
+    ...(cat.navHidden ? { robots: { index: false, follow: true } } : {}),
   };
 }
 

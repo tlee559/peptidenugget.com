@@ -27,6 +27,10 @@ export type Category = {
   pricesUpdated?: string;
   vials?: boolean;
   hidden?: boolean;
+  /** Routable landing page kept out of the tab nav + footer (e.g. an ad-only
+   *  A/B variant). Still generates a real page, but noindex'd so two near-
+   *  duplicate variants don't create a duplicate-content problem. */
+  navHidden?: boolean;
   brief?: boolean;     // show the plain-English peptide primer above the board
   research?: boolean;   // renders its tab in black, matching the storefront
   discover?: { search: string; match?: string[]; limit?: number };
@@ -47,6 +51,8 @@ export const PRESET_ORDER: PresetKey[] = ["grade", "vendor"];
 /** URL slug <-> catalog key. Slugs are the public contract; keys are internal. */
 export const SLUGS: Record<string, string> = {
   "top-tier": "toptier",
+  "fda-voted-peptime": "fdapeptime",
+  "fda-voted-amino": "fdaamino",
   peptides: "compounds",
   "amazon-finds": "finds",
   sprays: "sprays",
@@ -62,8 +68,14 @@ export const KEY_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(SLUGS).map(([slug, key]) => [key, slug])
 );
 
-export const visibleCategories = () =>
+/** Every category that gets a real /tier/[slug] page — includes navHidden
+ *  variants (they're routable, just not in the nav). Drives generateStaticParams. */
+export const routableCategories = () =>
   Object.entries(CATALOG).filter(([, c]) => !c.hidden) as [string, Category][];
+
+/** Categories surfaced in the tab nav + footer — excludes navHidden ad variants. */
+export const visibleCategories = () =>
+  Object.entries(CATALOG).filter(([, c]) => !c.hidden && !c.navHidden) as [string, Category][];
 
 export const vialArt = () =>
   (site as { vialArt?: string }).vialArt === "illustration"
